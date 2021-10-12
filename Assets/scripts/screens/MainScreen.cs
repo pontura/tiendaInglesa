@@ -20,6 +20,8 @@ public class MainScreen : MonoBehaviour
     {
         Game.Instance.screensManager.Back();
     }
+    public virtual void OnShow() { }
+
     public void Init()
     {
         
@@ -27,6 +29,7 @@ public class MainScreen : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
+        OnShow();
     }
     public void Hide()
     {
