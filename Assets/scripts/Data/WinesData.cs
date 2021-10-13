@@ -6,16 +6,23 @@ using System;
 public class WinesData : DataLoader
 {
     public List<Content> content;
+    public List<Content> contentFiltered;
+    public List<string> brands;
+    public List<string> paises;
+    public List<string> cepas;
     public Content active;
 
     [Serializable]
     public class Content
     {
+        public string id;
         public string codebar;
         public string name;
+        public string pais;
         public string cepa;
-        public string text;
-        public string image_url;
+        public string brand;
+        public string[] tags;
+        public int price;
     }
 
     private void Start()
@@ -44,12 +51,11 @@ public class WinesData : DataLoader
                         if (value != "")
                         {
                             contentLine = new Content();
-                            contentLine.codebar =  value;
                             content.Add(contentLine);
                         }
                     }
                     else if(value != "")
-                        Add(contentLine, colID, value);
+                        Add(contentLine, colID, value.ToLower());
                 }
                 colID++;
             }
@@ -61,10 +67,25 @@ public class WinesData : DataLoader
     {
         switch (colID)
         {
+            case 1: contentLine.id = value; break;
             case 2: contentLine.name = value; break;
-            case 3: contentLine.cepa = value; break;
-            case 4: contentLine.image_url = value; break;
-            case 5: contentLine.text = value; break;
+            case 3: contentLine.codebar = value; break;
+            case 4:
+                string r = value;
+                string[] arrs = value.Split("."[0]);
+                if (arrs.Length > 1)
+                    r = arrs[0];
+                contentLine.price = int.Parse(r);
+                break;
+            case 5: contentLine.brand = value; CheckForNewFilter(brands, value);  break;
+            case 9: contentLine.cepa = value; CheckForNewFilter(cepas, value); break;
+            case 12:
+                string[] arr = value.Split(","[0]);
+                if (arr.Length > 1)
+                    contentLine.tags = arr;
+                break;
+            case 13: contentLine.pais = value; CheckForNewFilter(paises, value); break;
+            case 14: contentLine.cepa = value; CheckForNewFilter(cepas, value); break;
         }
     }
     public void SetActive(string codebar)
@@ -72,5 +93,22 @@ public class WinesData : DataLoader
         foreach (Content c in content)
             if (c.codebar == codebar)
                 active = c;
+    }
+    void CheckForNewFilter(List<string> arr, string name)
+    {
+        foreach (string s in arr)
+            if (s == name)
+                return;
+        arr.Add(name);
+    }
+    public void Filter(string cepa, string brand, string paises)
+    {
+        contentFiltered.Clear();
+        foreach (Content c in content)
+        {
+            if (c.cepa == cepa && c.pais == paises && c.brand == brand)
+                contentFiltered.Add(c);
+        }
+
     }
 }
