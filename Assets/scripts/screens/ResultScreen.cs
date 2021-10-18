@@ -32,19 +32,25 @@ public class ResultScreen : MainScreen
         nameField.text = active.name;
         cepaField.text = active.cepa;
 
-        textField.text += active.brand;
-        textField.text += "\n<b>País</b>\n" + active.pais;
+        textField.text = active.brand;
+        string salto = "\n\n";
+        if (active.pais != null && active.pais != "")
+            textField.text += salto+ "<b>País</b>\n" + active.pais;
         if (active.p1>0)
-            textField.text += "\n<b>Puntaje Descorchados:</b>\n" + active.p1;
+            textField.text += salto + "<b>Puntaje Descorchados:</b>\n" + active.p1;
         if (active.p2 > 0)
-            textField.text += "\n<b>Puntaje Tim Atkin:</b>\n" + active.p2;
+            textField.text += salto + "<b>Puntaje Tim Atkin:</b>\n" + active.p2;
         if (active.p3 > 0)
-            textField.text += "\n<b>Puntaje James Suckling:</b>\n" + active.p3;
+            textField.text += salto + "<b>Puntaje James Suckling:</b>\n" + active.p3;
+        if (active.tiempo_guardia != "")
+            textField.text += salto + "<b>Tiempo de guarda:</b>\n" + active.tiempo_guardia;
+        if (active.temp != null && active.temp  != "")
+            textField.text += salto + "<b>Temperatura de servicio (°C):</b>\n" + active.temp;
 
         if (active.premios != null && active.premios != "")
-            textField.text += "\n<b>Premios:</b>\n" + active.premios;
+            textField.text += salto + "<b>Premios:</b>\n" + active.premios;
 
-        textField.text += "\n" + active.text;
+        textField.text += salto + active.text;
         StartCoroutine(Data.Instance.imagesLoader.C_LoadImage(active.id, 200, 200, OnLoaded, "large") );
     }
     void OnLoaded(Sprite sprite)
