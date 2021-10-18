@@ -8,4 +8,9 @@ public class MainMenu : MainScreen
     {
         Game.Instance.screensManager.Show(types.SCAN);
     }
+    public override void OnShow()
+    {
+        base.OnShow();
+        Data.Instance.winesData.Reset();
+    }
 }

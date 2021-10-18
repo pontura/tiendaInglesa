@@ -3,36 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FiltersScreen : MainScreen
+public class FiltersScreen : MonoBehaviour
 {
-    public Dropdown cepas;
-    public Dropdown paises;
-    public Dropdown brands;
-    string defaultString = "Selecciona";
+    [SerializeField] Text title;
+    public FilterDropDownUI filterDropDownUI;
+    [SerializeField] Transform container;
+    public List<FilterDropDownUI> dropDowns;
+    string defaultString = "";
+    WinesData winesData;
+    [SerializeField] GameObject panel;
+    ListScreen listScreen;
 
-    public void Start()
+    private void Awake()
     {
-        AddToDropDown(cepas, Data.Instance.winesData.cepas);
-        AddToDropDown(paises, Data.Instance.winesData.paises);
-        AddToDropDown(brands, Data.Instance.winesData.brands);
+        listScreen = GetComponent<ListScreen>();       
+    }
+    public void OnShow()
+    {
+        winesData = Data.Instance.winesData;
+        panel.SetActive(true);
+        Refresh();
+    }
+    public void OnHide()
+    {
+        panel.SetActive(false);
+    }
+    private void OnEnable()
+    {
+        Events.OnRemoveFilter += OnRemoveFilter;
+    }
+    private void OnDisable()
+    {
+        Events.OnRemoveFilter -= OnRemoveFilter;
+    }
+    void OnRemoveFilter(FiltersData.FilterData data)
+    {
+        Data.Instance.filtersData.RemoveFilter(data.name);
+        Refresh();
+        OnSelect();
+    }
+    public void Refresh()
+    {
+        Utils.RemoveAllChildsIn(container);
+        foreach(FiltersData.FilterData fd in Data.Instance.filtersData.filters)
+        {
+            if (fd.applied == "")
+            {
+                FilterDropDownUI fdd = Instantiate(filterDropDownUI, container);
+                fdd.Init(this,fd);
+            }
+        }
+        if (winesData.content.Count == winesData.contentFiltered.Count)
+            title.text = "Todos los vinos";
+        else if (winesData.contentFiltered.Count == 1)
+            title.text = "1 vino";
+        else
+            title.text = winesData.contentFiltered.Count + " vinos";
     }
     void AddToDropDown(Dropdown dropDown, List<string> arr)
     {
+        dropDown.ClearOptions();
         dropDown.AddOptions(arr);
     }
     public void OnSelect()
     {
-        string cepa = cepas.options[cepas.value].text;
-        if (cepa == defaultString)  cepa = "";
-
-        string pais = paises.options[paises.value].text;
-        if (pais == defaultString) pais = "";
-
-        string brand = brands.options[brands.value].text;
-        if (brand == defaultString) brand = "";
-
-        Data.Instance.winesData.Filter(cepa, brand, pais);
-
-        Game.Instance.screensManager.Show(MainScreen.types.LIST);
+        OnHide();
+        listScreen.OnShow();
     }
 }

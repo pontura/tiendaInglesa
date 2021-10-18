@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class FilterDropDownUI : MonoBehaviour
+{
+    [SerializeField] Text title;
+    FiltersScreen ui;
+    FiltersData.FilterData filterData;
+    Dropdown dropDown;
+
+    public void Init(FiltersScreen ui, FiltersData.FilterData filterData)
+    {
+        dropDown = GetComponent<Dropdown>();
+        this.filterData = filterData;
+        this.ui = ui;
+        title.text = filterData.name;
+        dropDown.AddOptions(filterData.availableFilters);
+        dropDown.onValueChanged.AddListener(delegate {
+            OnChanged();
+        });
+    }
+    public void OnChanged()// hack para que refresque el status (raro)
+    {
+        Invoke("Delayed", 0.1f); 
+        dropDown.onValueChanged.RemoveAllListeners();
+    }
+    void Delayed()
+    {
+        string value = dropDown.options[dropDown.value].text;        
+        Data.Instance.filtersData.AddFilter(filterData.name, value);
+        ui.Refresh();
+    }
+}

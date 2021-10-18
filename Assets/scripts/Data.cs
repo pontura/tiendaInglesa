@@ -14,6 +14,8 @@ public class Data : MonoBehaviour
     public string newScene;
     public SpreadsheetLoader spreadsheetLoader;
     public WinesData winesData;
+    public ImagesLoader imagesLoader;
+    public FiltersData filtersData;
 
     public static Data Instance
     {

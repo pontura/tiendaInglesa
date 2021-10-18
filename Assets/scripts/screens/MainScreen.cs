@@ -21,6 +21,7 @@ public class MainScreen : MonoBehaviour
         Game.Instance.screensManager.Back();
     }
     public virtual void OnShow() { }
+    public virtual void OnHide() { }
 
     public void Init()
     {
@@ -34,10 +35,11 @@ public class MainScreen : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+        OnHide();
     }
     public void OnFilters()
     {
-        Game.Instance.screensManager.Show(MainScreen.types.FILTERS);
+        Game.Instance.screensManager.Show(MainScreen.types.LIST);
     }
     public void OnSommelier()
     {

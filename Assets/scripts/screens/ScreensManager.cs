@@ -5,7 +5,7 @@ using UnityEngine;
 public class ScreensManager : MonoBehaviour
 {
     [SerializeField] MainScreen activeScreen;
-    [SerializeField] MainScreen lastActiveScreen;
+    public MainScreen lastActiveScreen;
     [SerializeField] MainScreen.types initialScreenType;
     [SerializeField] MainScreen[] screens;
 
@@ -16,7 +16,6 @@ public class ScreensManager : MonoBehaviour
             ms.Init();
             ms.Hide();
         }
-        Show(initialScreenType);
     }
     public void Show(MainScreen.types type)
     {
