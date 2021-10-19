@@ -37,4 +37,23 @@ public class ScreensManager : MonoBehaviour
         if(lastActiveScreen != activeScreen)
         Show(lastActiveScreen.type);
     }
+
+    float lastBarcodeTimer = 0;
+    void Update()
+    {
+        if (Input.inputString != "" && (lastBarcodeTimer == 0 || lastBarcodeTimer+1>Time.time))
+        {
+            lastBarcodeTimer = Time.time;
+            string value = Input.inputString;
+            value = value.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
+            Events.OnScanDone(value);
+            OnScanReady(value);
+            Debug.Log( "Llegó del lector: " + value);
+        }
+    }
+    public void OnScanReady(string codebar)
+    {
+        Data.Instance.winesData.SetActive(codebar);
+        Game.Instance.screensManager.Show(MainScreen.types.RESULT);
+    }
 }

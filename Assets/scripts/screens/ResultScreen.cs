@@ -30,7 +30,7 @@ public class ResultScreen : MainScreen
         priceField.text = "$" + active.price;
 
         nameField.text = active.name;
-        cepaField.text = active.cepa;
+        cepaField.text = "<i>" + active.cepa + "</i>";
 
         textField.text = active.brand;
         string salto = "\n\n";
