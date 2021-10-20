@@ -12,12 +12,12 @@ public class WinesData : DataLoader
     public List<Content> contentFiltered;
 
     public Content active;
-    public static string CEPAS = "cepas";
-    public static string BRANDS = "brands";
-    public static string PAISES = "paises";
+    public static string CEPAS = "Cepa";
+    public static string BRANDS = "Marca";
+    public static string PAISES = "País";
 
-    public static string DESDE = "desde";
-    public static string HASTA = "hasta";
+    public static string DESDE = "$ Desde";
+    public static string HASTA = "$ Hasta";
     public bool loaded;
     FiltersData filtersData;
 

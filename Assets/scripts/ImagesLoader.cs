@@ -12,7 +12,7 @@ public class ImagesLoader : MonoBehaviour
     {
         Texture2D texture = new Texture2D(width, height);
         string url = "https://images-ti-vm1.tiendainglesa.com.uy/" + size + "/P" + imageName + "-1.jpg";
-        Debug.Log("LoadImage: " + url);
+      //  Debug.Log("LoadImage: " + url);
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
         yield return request.SendWebRequest();
         if (request.result != UnityWebRequest.Result.Success)

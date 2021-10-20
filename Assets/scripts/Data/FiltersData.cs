@@ -5,9 +5,8 @@ using System;
 
 public class FiltersData : MonoBehaviour
 {
-    public const string SIN_LIMITE = "Sin límite";
-    string[] price_from = new string[] { SIN_LIMITE, "500", "750" , "1000"};
-    string[] price_to = new string[] { SIN_LIMITE, "500", "750", "1000", "1300" };
+    string[] price_from = new string[] { "500", "750" , "1000"};
+    string[] price_to = new string[] { "500", "750", "1000", "1300" };
 
     WinesData winesData;
     public List<FilterData> filters;
@@ -70,9 +69,9 @@ public class FiltersData : MonoBehaviour
         int desde = 0;
         int hasta = 0;
 
-        if (_desde != "" && _desde != SIN_LIMITE)
+        if (_desde != "")
             desde = int.Parse(_desde);
-        if (_hasta != "" && _hasta != SIN_LIMITE)
+        if (_hasta != "")
             hasta = int.Parse(_hasta);
 
         foreach (FilterData fd in filters)

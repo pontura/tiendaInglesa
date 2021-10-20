@@ -15,7 +15,8 @@ public class FilterDropDownUI : MonoBehaviour
         dropDown = GetComponent<Dropdown>();
         this.filterData = filterData;
         this.ui = ui;
-        title.text = filterData.name;
+        title.text = "" ;// filterData.name;
+        dropDown.AddOptions(new List<string>() { filterData.name });
         dropDown.AddOptions(filterData.availableFilters);
         dropDown.onValueChanged.AddListener(delegate {
             OnChanged();
@@ -28,6 +29,7 @@ public class FilterDropDownUI : MonoBehaviour
     }
     void Delayed()
     {
+        if (dropDown.value == 0) return;
         string value = dropDown.options[dropDown.value].text;        
         Data.Instance.filtersData.AddFilter(filterData.name, value);
         ui.Refresh();

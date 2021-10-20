@@ -47,7 +47,7 @@ public class FiltersScreen : MonoBehaviour
         Utils.RemoveAllChildsIn(container);
         foreach(FiltersData.FilterData fd in Data.Instance.filtersData.filters)
         {
-            if (fd.applied == "")
+            if (fd.applied == "" && fd.availableFilters.Count>1)
             {
                 FilterDropDownUI fdd = Instantiate(filterDropDownUI, container);
                 fdd.Init(this,fd);

@@ -12,6 +12,7 @@ public class ListScreen : MainScreen
     public bool automaticOpenFilters;
     [SerializeField] Text filterButtonText;
     bool filtersOpen;
+    [SerializeField] Scrollbar scrollBar;
     [SerializeField] FiltersContainerUI filtersContainer;
 
     private void Awake()
@@ -50,6 +51,7 @@ public class ListScreen : MainScreen
             ListItem li = Instantiate(listItem, container);
             li.Init(this, c);
         }
+        scrollBar.value = 1;
     }
     public void OnSelect(WinesData.Content content)
     {
