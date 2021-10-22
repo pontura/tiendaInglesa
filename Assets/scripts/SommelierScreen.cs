@@ -16,6 +16,7 @@ public class SommelierScreen : MainScreen
         base.OnShow();
         historial.Clear();
         SetOn("inicial");
+        Events.ResetSearch();
     }
     public override void OnBack()
     {        
@@ -44,6 +45,7 @@ public class SommelierScreen : MainScreen
     {
         if (content.titleID == null || content.titleID == "")
         {
+            Data.Instance.sommelierData.SetActiveRespuesta(content);
             Game.Instance.screensManager.Show(types.LIST);
         }
         else

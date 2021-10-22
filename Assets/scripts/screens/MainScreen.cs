@@ -37,12 +37,5 @@ public class MainScreen : MonoBehaviour
         gameObject.SetActive(false);
         OnHide();
     }
-    public void OnFilters()
-    {
-        Game.Instance.screensManager.Show(MainScreen.types.LIST);
-    }
-    public void OnSommelier()
-    {
-        Game.Instance.screensManager.Show(MainScreen.types.SOMMELIER);
-    }
+
 }

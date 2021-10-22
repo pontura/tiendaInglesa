@@ -308,4 +308,11 @@ public class WinesData : DataLoader
         }
         return arr;
     }
+    public List<Content> GetSommelierExlusives()
+    {
+        List<Content> arr = new List<Content>();
+        foreach(string s in Data.Instance.sommelierData.active.exclusivos)
+            arr.Add(GetSpecificWine(s));
+        return arr;
+    }
 }

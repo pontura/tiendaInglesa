@@ -6,8 +6,10 @@ using System;
 public class SommelierData : DataLoader
 {
     public List<Content> content;
+    public RespuestasContent active;
 
     public bool loaded;
+    public bool activeSommelierList;
 
     [Serializable]
     public class Content
@@ -21,9 +23,11 @@ public class SommelierData : DataLoader
     {
         public string text;
         public string titleID;
-        public List<string> tags;
         public int minPrice;
         public int maxPrice;
+        public string[] tags;
+        public string[] paises;
+        public string[] exclusivos;
     }
     private void Start()
     {
@@ -83,7 +87,44 @@ public class SommelierData : DataLoader
                 if (rContent != null)
                     rContent.titleID = value;
                 break;
+            case 4:
+                if (rContent != null)
+                {
+                    string v = value;
+                    string[] arr = value.Split("-"[0]);
+                    foreach (string s in arr)
+                        SetPrice(rContent, s);
+                }
+                break;
+            case 5:
+                if (rContent != null)
+                {
+                    string v = value;
+                    rContent.tags = value.Split(","[0]);
+                }
+                break;
+            case 6:
+                if (rContent != null)
+                {
+                    string v = value;
+                    rContent.exclusivos = value.Split(","[0]);
+                }
+                break;
+            case 7:
+                if (rContent != null)
+                {
+                    string v = value;
+                    rContent.tags = value.Split(","[0]);
+                }
+                break;
         }
+    }
+    void SetPrice(RespuestasContent rc, string value)
+    {
+        if (value.Contains(">"))
+            rc.maxPrice = int.Parse(value.Replace(">", ""));
+        else
+            rc.minPrice = int.Parse(value.Replace("<", ""));
     }
     public SommelierData.Content GetContent(string id)
     {
@@ -91,6 +132,17 @@ public class SommelierData : DataLoader
             if (c.id == id)
                 return c;
         return null;
+    }
+    public void SetActiveRespuesta(RespuestasContent rc)
+    {
+        active = rc;
+        activeSommelierList = true;
+    }
+    public override void Reset()
+    {
+        base.Reset();
+        active = null;
+        activeSommelierList = false;
     }
 
 

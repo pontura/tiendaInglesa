@@ -24,6 +24,7 @@ public class FilterDropDownUI : MonoBehaviour
     }
     public void OnChanged()// hack para que refresque el status (raro)
     {
+        ui.OnChange();
         Invoke("Delayed", 0.1f); 
         dropDown.onValueChanged.RemoveAllListeners();
     }

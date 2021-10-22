@@ -16,7 +16,9 @@ public class ImagesLoader : MonoBehaviour
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
         yield return request.SendWebRequest();
         if (request.result != UnityWebRequest.Result.Success)
-            Debug.Log(request.error);
+        {
+          //  Debug.Log(request.error);
+        }            
         else
         {
             texture = ((DownloadHandlerTexture)request.downloadHandler).texture;

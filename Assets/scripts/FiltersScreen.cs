@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FiltersScreen : MonoBehaviour
 {
-    [SerializeField] Text title;
+    public Text title;
     public FilterDropDownUI filterDropDownUI;
     [SerializeField] Transform container;
     public List<FilterDropDownUI> dropDowns;
@@ -13,6 +13,7 @@ public class FiltersScreen : MonoBehaviour
     WinesData winesData;
     [SerializeField] GameObject panel;
     ListScreen listScreen;
+    public bool changed;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class FiltersScreen : MonoBehaviour
         winesData = Data.Instance.winesData;
         panel.SetActive(true);
         Refresh();
+        changed = false;
     }
     public void OnHide()
     {
@@ -41,6 +43,7 @@ public class FiltersScreen : MonoBehaviour
         Data.Instance.filtersData.RemoveFilter(data.name);
         Refresh();
         OnSelect();
+        changed = true;
     }
     public void Refresh()
     {
@@ -60,6 +63,10 @@ public class FiltersScreen : MonoBehaviour
         else
             title.text = winesData.contentFiltered.Count + " vinos";
     }
+    public void OnChange()
+    {
+        changed = true;
+    }
     void AddToDropDown(Dropdown dropDown, List<string> arr)
     {
         dropDown.ClearOptions();
@@ -68,6 +75,11 @@ public class FiltersScreen : MonoBehaviour
     public void OnSelect()
     {
         OnHide();
-        listScreen.OnShow();
+        listScreen.filtersButton.SetActive(true);
+        if (changed)
+        {
+            listScreen.ResetSearch();
+            listScreen.OnShow();
+        }
     }
 }

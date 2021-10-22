@@ -24,6 +24,7 @@ public class PaginatorUI : MonoBehaviour
         total = Data.Instance.winesData.contentFiltered.Count;
         totalPags = (int)Mathf.Ceil((float)total / (float)size);
         SetValues();
+        panel.SetActive(true);
     }
     void SetValues()
     {

@@ -53,6 +53,7 @@ public class ScreensManager : MonoBehaviour
     }
     public void OnScanReady(string codebar)
     {
+        Data.Instance.sommelierData.Reset();
         Data.Instance.winesData.SetActive(codebar);
         Game.Instance.screensManager.Show(MainScreen.types.RESULT);
     }

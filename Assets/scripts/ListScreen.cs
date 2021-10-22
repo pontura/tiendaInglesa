@@ -11,15 +11,25 @@ public class ListScreen : MainScreen
     public FiltersScreen filtersScreen;
     public bool automaticOpenFilters;
     [SerializeField] Text filterButtonText;
-    bool filtersOpen;
     [SerializeField] Scrollbar scrollBar;
     [SerializeField] FiltersContainerUI filtersContainer;
+    public GameObject filtersButton;
+    [SerializeField] bool loaded;
 
     private void Awake()
     {
         automaticOpenFilters = true;
         filtersScreen = GetComponent<FiltersScreen>();
         paginatorUI = GetComponent<PaginatorUI>();
+        Events.ResetSearch += ResetSearch;
+    }
+    private void OnDestroy()
+    {
+        Events.ResetSearch -= ResetSearch;
+    }
+    public void ResetSearch()
+    {
+        loaded = false;
     }
     public override void OnBack()
     {
@@ -29,29 +39,70 @@ public class ListScreen : MainScreen
     }
     public override void OnShow()
     {
+        base.OnShow();
+        if (loaded) return;
+
+        if (Data.Instance.sommelierData.activeSommelierList)
+        {
+            OpenSommelierList();
+            return;
+        }
+
+        filtersButton.SetActive(true);
+        filtersContainer.gameObject.SetActive(true);
+
         if (automaticOpenFilters)
             OpenFilters();
         else
         {
-            filtersOpen = false;
-            SetFilterText();
+            filtersButton.SetActive(true);
+            paginatorUI.Init();
         }
+        automaticOpenFilters = false;    
+    }
+    void OpenSommelierList()
+    {
+        SommelierData.RespuestasContent active = Data.Instance.sommelierData.active;
+        if (active.minPrice != 0)
+            Data.Instance.filtersData.AddFilter(WinesData.HASTA, active.minPrice.ToString());
+        if (active.maxPrice != 0)
+            Data.Instance.filtersData.AddFilter(WinesData.DESDE, active.maxPrice.ToString());
+
         automaticOpenFilters = false;
-        base.OnShow();
-        paginatorUI.Init();       
+        ShowResults(new Vector2(0, 10));
+        OpenFilters();
+        paginatorUI.Hide();
+        filtersButton.SetActive(false);
+        filtersScreen.title.text = "Te sugerimos estos vinos";
+        filtersContainer.gameObject.SetActive(false);
     }
     public void ShowAll()
     {
-        Utils.RemoveAllChildsIn(container);
         Vector2 from_to = paginatorUI.GetFromTo();
-        print("filtra: " + from_to);
-        List<WinesData.Content> arr = Data.Instance.winesData.GetFiltered((int)from_to.x, (int)from_to.y);
+        ShowResults(from_to);
+    } 
+    void ShowResults(Vector2 from_to)
+    {
+        print("ShowResults");
+        Utils.RemoveAllChildsIn(container);
+        List<WinesData.Content> arr;
+        if (Data.Instance.sommelierData.activeSommelierList)
+        {
+            arr = Data.Instance.winesData.GetSommelierExlusives();
+            Add(arr);
+        }
+        arr = Data.Instance.winesData.GetFiltered((int)from_to.x, (int)from_to.y);
+        Add(arr);
+        scrollBar.value = 1;
+        loaded = true;
+    }
+    void Add(List<WinesData.Content> arr)
+    {
         foreach (WinesData.Content c in arr)
         {
             ListItem li = Instantiate(listItem, container);
             li.Init(this, c);
         }
-        scrollBar.value = 1;
     }
     public void OnSelect(WinesData.Content content)
     {
@@ -60,23 +111,7 @@ public class ListScreen : MainScreen
     }
     public void OpenFilters()
     {
-        if (filtersOpen)
-        {
-            filtersOpen = false;
-            filtersScreen.OnHide();
-        }
-        else
-        {
-            filtersOpen = true;
-            filtersScreen.OnShow();
-        }
-        SetFilterText();
-    }
-    void SetFilterText()
-    {
-        if (filtersOpen)
-            filterButtonText.text = "X Filtros";
-        else
-            filterButtonText.text = "Filtros";
+        filtersScreen.OnShow();
+        filtersButton.SetActive(false);
     }
 }
