@@ -132,22 +132,26 @@ public class WinesData : DataLoader
                 string[] arrs = value.Split("."[0]);
                 if (arrs.Length > 1)
                     r = arrs[0];
-                contentLine.price = int.Parse(r);
+                int numericValue = 0;
+                int.TryParse(r, out numericValue);
+                if(numericValue>0)
+                    contentLine.price = int.Parse(r);
                 break;
-            case 5: contentLine.brand = value; CheckForNewFilter(BRANDS, value);  break;
+            case 5: contentLine.brand = value.ToLower(); CheckForNewFilter(BRANDS, value.ToLower());  break;
             case 9: contentLine.cepa = value.ToLower(); CheckForNewFilter(CEPAS, value.ToLower());break;
-            case 12:
-                string[] tagsArr = value.Split(","[0]);
-                foreach (string s in tagsArr)
-                    contentLine.tags.Add(s);
-                break;
-            case 13: contentLine.pais = value; CheckForNewFilter(PAISES, value.ToLower()); break;
-            case 14: contentLine.cepa = value.ToLower(); CheckForNewFilter(CEPAS, value.ToLower()); break;
-            case 15:
-                string[] mArr = value.Split(","[0]);
-                foreach (string s in mArr)
-                    contentLine.maridaje.Add(s);
-                break;
+            case 11: contentLine.text = value; break;
+            //case 12:
+            //    string[] tagsArr = value.Split(","[0]);
+            //    foreach (string s in tagsArr)
+            //        contentLine.tags.Add(s);
+            //    break;
+            //case 13: contentLine.pais = value; CheckForNewFilter(PAISES, value.ToLower()); break;
+            //case 14: contentLine.cepa = value.ToLower(); CheckForNewFilter(CEPAS, value.ToLower()); break;
+            //case 15:
+            //    string[] mArr = value.Split(","[0]);
+            //    foreach (string s in mArr)
+            //        contentLine.maridaje.Add(s);
+            //    break;
         }
     }
 
@@ -174,10 +178,18 @@ public class WinesData : DataLoader
                             contentLine = GetSpecificWine(value);
                         }
                         else if (contentLine != null) {
+                            if (colID == 1)
+                            {
+                                contentLine.name = value;
+                            }
+                            if (colID == 2)
+                            {
+                               // contentLine.brand = value.ToLower(); CheckForNewFilter(BRANDS, value.ToLower()); break;
+                            }
                             if (colID == 3)
                             {
-                                contentLine.cepa = value.ToLower();
-                                CheckForNewFilter(CEPAS, value.ToLower());
+                             //   contentLine.cepa = value.ToLower();
+                              //  CheckForNewFilter(CEPAS, value.ToLower());
                             }
                             else if (colID == 4)
                             {
@@ -203,11 +215,11 @@ public class WinesData : DataLoader
                             {
                                 contentLine.p2 = int.Parse(value);
                             }
-                            else if (colID == 10)
+                            else if (colID == 8)
                             {
                                 contentLine.p3 = int.Parse(value);
                             }
-                            else if (colID == 11)
+                            else if (colID == 9)
                             {
                                 contentLine.premios = value;
                             }
