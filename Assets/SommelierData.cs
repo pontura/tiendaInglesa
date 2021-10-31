@@ -6,7 +6,7 @@ using System;
 public class SommelierData : DataLoader
 {
     public List<Content> content;
-    public RespuestasContent active;
+    public List<RespuestasContent> allActive;
 
     public bool loaded;
     public bool activeSommelierList;
@@ -28,6 +28,7 @@ public class SommelierData : DataLoader
         public string[] tags;
         public string[] paises;
         public string[] exclusivos;
+        public string[] cepas;
     }
     private void Start()
     {
@@ -117,6 +118,13 @@ public class SommelierData : DataLoader
                     rContent.tags = value.Split(","[0]);
                 }
                 break;
+            case 8:
+                if (rContent != null)
+                {
+                    string v = value;
+                    rContent.cepas = value.Split(","[0]);
+                }
+                break;
         }
     }
     void SetPrice(RespuestasContent rc, string value)
@@ -133,17 +141,49 @@ public class SommelierData : DataLoader
                 return c;
         return null;
     }
-    public void SetActiveRespuesta(RespuestasContent rc)
+    public void SetActiveRespuesta(RespuestasContent rc, List<string> others)
     {
-        active = rc;
+        allActive.Clear();
+        others.RemoveAt(others.Count-1); // borra el ultimo porque no tiene ID:
+       
+        foreach (string s in others)
+        {
+            print("____Va a filtar: " + s);
+            allActive.Add(GetRespuestaContentFor(s));
+        }
+        allActive.Add(rc);
         activeSommelierList = true;
     }
     public override void Reset()
     {
+        allActive.Clear();
         base.Reset();
-        active = null;
         activeSommelierList = false;
     }
-
+    RespuestasContent GetRespuestaContentFor(string s)
+    {
+        foreach(Content c in content)
+        {
+            foreach (RespuestasContent rc in c.respuestas)
+            {
+                if (c.id == s)
+                    return rc;
+            }
+        }
+        return null;
+    }
+    public List<string> GetAllExlusives()
+    {
+        List<string> all = new List<string>();
+        foreach (RespuestasContent rc in allActive)
+        {
+            if (rc.exclusivos != null && rc.exclusivos.Length > 0)
+            {
+                foreach (string s in rc.exclusivos)
+                    all.Add(s);
+            }
+        }
+        return all;
+    }
 
 }

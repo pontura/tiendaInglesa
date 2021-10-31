@@ -24,9 +24,12 @@ public class SommelierScreen : MainScreen
             base.OnBack();
         else
         {
-            id--;
-            SetOn(historial[id]);
-            historial.RemoveAt(historial.Count - 1);
+            
+            historial.Remove(historial[historial.Count - 1]);
+            string lastToLoad = historial[historial.Count - 1];
+            historial.Remove(lastToLoad);
+            id--;         
+            SetOn(lastToLoad);
         }
     }
     void SetOn(string questionID)
@@ -45,7 +48,7 @@ public class SommelierScreen : MainScreen
     {
         if (content.titleID == null || content.titleID == "")
         {
-            Data.Instance.sommelierData.SetActiveRespuesta(content);
+            Data.Instance.sommelierData.SetActiveRespuesta(content, historial);
             Game.Instance.screensManager.Show(types.LIST);
         }
         else

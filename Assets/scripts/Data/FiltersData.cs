@@ -148,6 +148,7 @@ public class FiltersData : MonoBehaviour
     }
     public void AddFilter(string filterName, string value)
     {
+        print("AddFilter " + filterName + " value: " + value);
         FilterData fd = GetFilter(filterName);        
         fd.applied = value;
         winesData.ResetFilters();
