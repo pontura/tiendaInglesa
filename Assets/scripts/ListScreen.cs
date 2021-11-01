@@ -65,7 +65,7 @@ public class ListScreen : MainScreen
         Data.Instance.sommelierData.FilterBySommelier();
         automaticOpenFilters = false;
         ShowResults(new Vector2(0, 20));
-        OpenFilters();
+        filtersScreen.OnHide();
         paginatorUI.Hide();
         filtersButton.SetActive(false);
         filtersScreen.title.text = "Te sugerimos estos vinos";
