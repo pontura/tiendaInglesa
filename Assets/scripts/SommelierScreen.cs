@@ -8,13 +8,17 @@ public class SommelierScreen : MainScreen
     [SerializeField] SommelierButton button;
     [SerializeField] Transform container;
     [SerializeField] Text field;
+
     public List<string> historial;
+    public List<string> texts;
+
     public int id;
 
     public override void OnShow()
     {
         base.OnShow();
         historial.Clear();
+        texts.Clear();
         SetOn("inicial");
         Events.ResetSearch();
     }
@@ -24,7 +28,8 @@ public class SommelierScreen : MainScreen
             base.OnBack();
         else
         {
-            
+            texts.Remove(texts[texts.Count - 1]);
+
             historial.Remove(historial[historial.Count - 1]);
             string lastToLoad = historial[historial.Count - 1];
             historial.Remove(lastToLoad);
@@ -46,9 +51,10 @@ public class SommelierScreen : MainScreen
     }
     public void OnAnswer(SommelierData.RespuestasContent content)
     {
+        texts.Add(content.text);
         if (content.titleID == null || content.titleID == "")
         {
-            Data.Instance.sommelierData.SetActiveRespuesta(content, historial);
+            Data.Instance.sommelierData.SetActiveRespuesta(content, historial, texts);
             Game.Instance.screensManager.Show(types.LIST);
         }
         else

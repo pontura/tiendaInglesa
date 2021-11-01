@@ -62,14 +62,7 @@ public class ListScreen : MainScreen
     }
     void OpenSommelierList()
     {
-        foreach (SommelierData.RespuestasContent active in Data.Instance.sommelierData.allActive)
-        {
-            if (active.minPrice > 0)
-                Data.Instance.filtersData.AddFilter(WinesData.HASTA, active.minPrice.ToString());
-            if (active.maxPrice > 0)
-                Data.Instance.filtersData.AddFilter(WinesData.DESDE, active.maxPrice.ToString());
-        }
-
+        Data.Instance.sommelierData.FilterBySommelier();
         automaticOpenFilters = false;
         ShowResults(new Vector2(0, 20));
         OpenFilters();

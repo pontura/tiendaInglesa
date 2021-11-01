@@ -7,10 +7,21 @@ public class SommelierData : DataLoader
 {
     public List<Content> content;
     public List<RespuestasContent> allActive;
+    public AllFilters allFiltersActive; // los allActive pero sumados
 
     public bool loaded;
     public bool activeSommelierList;
 
+    [Serializable]
+    public class AllFilters
+    {
+        public int desde;
+        public int hasta;
+        public List<string> tags;
+        public List<string> paises;
+        public List<string> exclusivos;
+        public List<string> cepas;
+    }
     [Serializable]
     public class Content
     {
@@ -91,8 +102,8 @@ public class SommelierData : DataLoader
             case 4:
                 if (rContent != null)
                 {
-                    string v = value;
-                    string[] arr = value.Split("-"[0]);
+                    string v = value.Replace(" ", "");
+                    string[] arr = v.Split("-"[0]);
                     foreach (string s in arr)
                         SetPrice(rContent, s);
                 }
@@ -100,29 +111,30 @@ public class SommelierData : DataLoader
             case 5:
                 if (rContent != null)
                 {
-                    string v = value;
-                    rContent.tags = value.Split(","[0]);
+                    string v = value.Replace(" ", "").ToLower();
+                    rContent.tags = v.Split(","[0]);
                 }
                 break;
             case 6:
                 if (rContent != null)
                 {
-                    string v = value;
-                    rContent.exclusivos = value.Split(","[0]);
+                    string v = value.Replace(" ", "").ToLower();
+                    rContent.exclusivos = v.Split(","[0]);
                 }
                 break;
             case 7:
                 if (rContent != null)
                 {
-                    string v = value;
-                    rContent.tags = value.Split(","[0]);
+                    string v = value.Replace(" ", "").ToLower();
+                    rContent.paises = v.Split(","[0]);
                 }
                 break;
             case 8:
                 if (rContent != null)
                 {
+                    value = value.Replace(" ", "").ToLower();
                     string v = value;
-                    rContent.cepas = value.Split(","[0]);
+                    rContent.cepas = v.Split(","[0]);
                 }
                 break;
         }
@@ -141,17 +153,19 @@ public class SommelierData : DataLoader
                 return c;
         return null;
     }
-    public void SetActiveRespuesta(RespuestasContent rc, List<string> others)
+    public void SetActiveRespuesta(RespuestasContent rc, List<string> ids, List<string> texts)
     {
+        print("________SetActiveRespuesta");
         allActive.Clear();
-        others.RemoveAt(others.Count-1); // borra el ultimo porque no tiene ID:
-       
-        foreach (string s in others)
+       // ids.RemoveAt(ids.Count-1); // borra el ultimo porque no tiene ID:
+        int _id = 0;
+        foreach (string id in ids)
         {
-            print("____Va a filtar: " + s);
-            allActive.Add(GetRespuestaContentFor(s));
+            string text = texts[_id];
+            allActive.Add(GetRespuestaContentFor(id, text));
+            _id++;
         }
-        allActive.Add(rc);
+        //allActive.Add(rc);
         activeSommelierList = true;
     }
     public override void Reset()
@@ -160,14 +174,19 @@ public class SommelierData : DataLoader
         base.Reset();
         activeSommelierList = false;
     }
-    RespuestasContent GetRespuestaContentFor(string s)
+    RespuestasContent GetRespuestaContentFor(string id, string text)
     {
-        foreach(Content c in content)
+
+        print("____Va a filtar id: " + id + " text: " + text);
+        foreach (Content c in content)
         {
-            foreach (RespuestasContent rc in c.respuestas)
+            if (c.id == id)
             {
-                if (c.id == s)
-                    return rc;
+                foreach (RespuestasContent rc in c.respuestas)
+                {
+                    if (rc.text == text)
+                        return rc;
+                }
             }
         }
         return null;
@@ -184,6 +203,62 @@ public class SommelierData : DataLoader
             }
         }
         return all;
+    }
+    public void FilterBySommelier()
+    {
+        allFiltersActive = new AllFilters();
+        allFiltersActive.cepas = new List<string>();
+        allFiltersActive.paises = new List<string>();
+        allFiltersActive.tags = new List<string>();
+        allFiltersActive.exclusivos = new List<string>();
+
+        foreach (SommelierData.RespuestasContent active in allActive)
+        {
+            if (active.minPrice > 0)
+                allFiltersActive.hasta = active.minPrice;
+            if (active.maxPrice > 0)
+                allFiltersActive.desde = active.maxPrice;
+            if (active.cepas != null)
+            {
+                foreach(string s in active.cepas)
+                    allFiltersActive.cepas.Add(s);
+            }
+            if (active.paises != null)
+            {
+                foreach (string s in active.paises)
+                    allFiltersActive.paises.Add(s);
+            }
+            if (active.tags != null)
+            {
+                foreach (string s in active.tags)
+                    allFiltersActive.tags.Add(s);
+            }
+            if (active.exclusivos != null)
+            {
+                foreach (string s in active.exclusivos)
+                    allFiltersActive.exclusivos.Add(s);
+            }
+        }
+        print("1 ______" + Data.Instance.winesData.contentFiltered.Count);
+        if (allFiltersActive.hasta > 0)
+            Data.Instance.filtersData.AddFilter(WinesData.HASTA, allFiltersActive.hasta.ToString());
+        if (allFiltersActive.desde > 0)
+            Data.Instance.filtersData.AddFilter(WinesData.DESDE, allFiltersActive.desde.ToString());
+
+        print("2 PRECIO ______" + Data.Instance.winesData.contentFiltered.Count);
+        if (allFiltersActive.paises.Count > 0)
+            Data.Instance.winesData.ApplySommelierFilter(WinesData.PAISES, allFiltersActive.paises);
+
+        print("3 PAISES______" + Data.Instance.winesData.contentFiltered.Count);
+        if (allFiltersActive.cepas.Count > 0)
+            Data.Instance.winesData.ApplySommelierFilter(WinesData.CEPAS, allFiltersActive.cepas);
+
+        print("4 CEPAS______" + Data.Instance.winesData.contentFiltered.Count);
+        if (allFiltersActive.tags.Count > 0)
+            Data.Instance.winesData.ApplySommelierFilter(WinesData.TAGS, allFiltersActive.tags, true);
+
+        print("5 TAGS ______" + Data.Instance.winesData.contentFiltered.Count);
+
     }
 
 }

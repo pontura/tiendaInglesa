@@ -10,6 +10,7 @@ public class FiltersData : MonoBehaviour
 
     WinesData winesData;
     public List<FilterData> filters;
+
     [Serializable]
     public class FilterData
     {
@@ -37,6 +38,7 @@ public class FiltersData : MonoBehaviour
         filters.Add(new FilterData(WinesData.BRANDS));
         filters.Add(new FilterData(WinesData.PAISES));
     }
+
     void AddPriceData(string name, string[] values)
     {
         FilterData fd = new FilterData(name);
@@ -168,4 +170,5 @@ public class FiltersData : MonoBehaviour
         winesData.ResetFilters();
         ApplyFilters();
     }
+    
 }

@@ -13,6 +13,7 @@ public class WinesData : DataLoader
 
     public Content active;
     public static string CEPAS = "Cepa";
+    public static string TAGS = "Tags";
     public static string BRANDS = "Marca";
     public static string PAISES = "País";
 
@@ -122,6 +123,7 @@ public class WinesData : DataLoader
     }
     void Add(Content contentLine, int colID, string value)
     {
+
         switch (colID)
         {
             case 1: contentLine.id = value; break;
@@ -138,7 +140,10 @@ public class WinesData : DataLoader
                     contentLine.price = int.Parse(r);
                 break;
             case 5: contentLine.brand = value.ToLower(); CheckForNewFilter(BRANDS, value.ToLower());  break;
-            case 9: contentLine.cepa = value.ToLower(); CheckForNewFilter(CEPAS, value.ToLower());break;
+            case 9:
+                string v = value.Replace(" ", "").ToLower();
+                contentLine.cepa = v;
+                CheckForNewFilter(CEPAS, v); break;
             case 11: contentLine.text = value; break;
             //case 12:
             //    string[] tagsArr = value.Split(","[0]);
@@ -193,11 +198,15 @@ public class WinesData : DataLoader
                             }
                             else if (colID == 4)
                             {
-                                contentLine.tags.Add(value);
+                                string v = value.Replace(" ", "").ToLower();
+                                string[] arr = v.Split(","[0]);
+                                foreach(string s in arr)
+                                    contentLine.tags.Add(s);
                             }
                             else if (colID == 5)
                             {
-                                contentLine.pais = value;
+                                string v = value.Replace(" ", "").ToLower();
+                                contentLine.pais = v;
                             }
                             else if (colID == 6)
                             {
@@ -314,5 +323,52 @@ public class WinesData : DataLoader
         foreach(string s in Data.Instance.sommelierData.GetAllExlusives())
             arr.Add(GetSpecificWine(s));
         return arr;
+    }
+    public void ApplySommelierFilter(string name, List<string> values, bool onlyIfHasAll = false)
+    {
+        List<Content> toRemove = new List<Content>();
+        foreach (Content c in contentFiltered)
+        {
+            bool matched = false;
+            if (name == WinesData.CEPAS)
+            {
+                foreach (string value in values)
+                {               
+                    if (c.cepa == value)
+                        matched = true;                                 
+                }
+                if(!matched)
+                    toRemove.Add(c);
+            }
+            else if (name == WinesData.PAISES)
+            {
+                foreach (string value in values)
+                {
+                    if (c.pais == value)
+                        matched = true;
+                }
+                if (!matched)
+                    toRemove.Add(c);
+            }
+            else if (name == WinesData.TAGS)
+            {
+                bool hasAll = true;
+                foreach (string value in values)
+                {
+                    bool hasIt = false;
+                    foreach (string tag in c.tags)
+                    {
+                        if (tag == value)
+                            hasIt = true;
+                    }
+                    if (!hasIt)
+                        hasAll = false;
+                }
+                if (!hasAll)
+                    toRemove.Add(c);
+            }
+        }
+        foreach (Content c in toRemove)
+            contentFiltered.Remove(c);
     }
 }
