@@ -106,7 +106,7 @@ public class FiltersData : MonoBehaviour
                || (paises_appliedFilter != "" && thisContentFiltered.pais != paises_appliedFilter)
             )
             {
-                print(thisContentFiltered.cepa + " cepa_app: " + cepas_appliedFilter + " pais: " + paises_appliedFilter + " brands:" + brands_appliedFilter);
+                //print(thisContentFiltered.cepa + " cepa_app: " + cepas_appliedFilter + " pais: " + paises_appliedFilter + " brands:" + brands_appliedFilter);
                 winesData.contentFiltered.Remove(thisContentFiltered);
             }
             else

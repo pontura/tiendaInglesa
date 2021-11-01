@@ -132,7 +132,7 @@ public class SommelierData : DataLoader
             case 8:
                 if (rContent != null)
                 {
-                    value = value.Replace(" ", "").ToLower();
+                    value = value.Replace(", ", ",").ToLower();
                     string v = value;
                     rContent.cepas = v.Split(","[0]);
                 }
