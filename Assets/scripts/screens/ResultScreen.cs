@@ -83,6 +83,19 @@ public class ResultScreen : MainScreen
     {
         Utils.RemoveAllChildsIn(foodsContainer);
         List<string> all = Data.Instance.foodsData.GetFoodsByTag(active.tags);
+        int qty = all.Count;
+        if (qty < 4)
+        {
+            List<string> allCepas = Data.Instance.foodsData.GetFoodByCepa(active.cepa);
+            foreach (string s in allCepas)
+            {
+                if (qty < 4)
+                    all.Add(s);
+                qty++;
+                print("Agrega por cepa: " + active.cepa + " : " + s);
+            }
+        }
+
         if (all != null && all.Count < 1)
             foods.SetActive(false);
         else
@@ -101,11 +114,11 @@ public class ResultScreen : MainScreen
         premios.SetActive(false);
 
         if (active.p1 > 0)
-            AddPremio("Puntaje Descorchados)",  active.p1);
+            AddPremio("Descorchados",  active.p1);
         if (active.p2 > 0)
-            AddPremio("Puntaje Tim Atkin", active.p2);
+            AddPremio("Tim Atkin", active.p2);
         if (active.p3 > 0)
-            AddPremio("Puntaje James Suckling", active.p3);
+            AddPremio("James Suckling", active.p3);
     }
     void AddPremio(string name, int text)
     {

@@ -11,6 +11,7 @@ public class FoodsData : MonoBehaviour
     public class FoodData
     {
         public string name;
+        public string cepas;
     }
     public List<FoodData> GetAll()
     {
@@ -32,5 +33,20 @@ public class FoodsData : MonoBehaviour
             if (fd.name == tag)
                 return true;
         return false;
+    }
+    public List<string> GetFoodByCepa(string _cepa)
+    {
+        List<string> arr = new List<string>();
+        foreach(FoodData fd in all)
+        {
+            string s = fd.cepas.Replace(" ", "").ToLower();
+            string[] allArr = s.Split(","[0]);
+            foreach (string cepa in allArr)
+            {
+                if (cepa == _cepa.ToLower())
+                    arr.Add(fd.name);
+            }
+        }
+        return arr;
     }
 }
