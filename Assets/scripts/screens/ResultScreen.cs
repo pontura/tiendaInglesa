@@ -5,14 +5,29 @@ using UnityEngine.UI;
 
 public class ResultScreen : MainScreen
 {
+    [SerializeField] GameObject guarda;
+    [SerializeField] GameObject temp;
+    [SerializeField] GameObject foods;
+    [SerializeField] GameObject premios;
+
     public Text nameField;
     public Text cepaField;
     public Text paisField;
     public Text marcaField;
     public Text textField;
-    public Text textField2;
+
     public Text priceField;
+
+    public Text guardaField;
+    public Text tempField;
+
     public Image image;
+    [SerializeField] Transform foodsContainer;
+    [SerializeField] FoodIconUI foodIcon;
+
+
+    [SerializeField] Transform premiosContainer;
+    [SerializeField] PremioUI premioUI;
 
     public override void OnBack()
     {
@@ -25,10 +40,11 @@ public class ResultScreen : MainScreen
     {
         image.sprite = null;
     }
+    WinesData.Content active ;
     public override void OnShow()
     {
         base.OnShow();
-        WinesData.Content active = Data.Instance.winesData.active;
+        active = Data.Instance.winesData.active;
 
         priceField.text = "$" + active.price;
 
@@ -41,26 +57,60 @@ public class ResultScreen : MainScreen
         textField.text = active.text;
         textField.text += "\n";
 
-        if (active.p1>0)
-            textField2.text += salto + "<b>Puntaje Descorchados:</b>\n" + active.p1;
-        if (active.p2 > 0)
-            textField2.text += salto + "<b>Puntaje Tim Atkin:</b>\n" + active.p2;
-        if (active.p3 > 0)
-            textField2.text += salto + "<b>Puntaje James Suckling:</b>\n" + active.p3;
-        if (active.tiempo_guardia != "")
-            textField2.text += salto + "<b>Tiempo de guarda:</b>\n" + active.tiempo_guardia;
-        if (active.temp != null && active.temp  != "")
-            textField2.text += salto + "<b>Temperatura de servicio (°C):</b>\n" + active.temp;
+        if (active.tiempo_guardia != null && active.tiempo_guardia != "")
+        {
+            guardaField.text = active.tiempo_guardia;
+            guarda.SetActive(true);
+        } else guarda.SetActive(false);
 
-        if (active.premios != null && active.premios != "")
-            textField2.text += salto + "<b>Premios:</b>\n" + active.premios;
-
+        if (active.temp != null && active.temp != "")
+        {
+            temp.SetActive(true);
+            tempField.text = active.temp;
+         } else temp.SetActive(false);
 
         StartCoroutine(Data.Instance.imagesLoader.C_LoadImage(active.id, 200, 200, OnLoaded, "large") );
+
+        SetFoods();
+        SetPremios();
     }
     void OnLoaded(Sprite sprite)
     {
         image.sprite = sprite;
         image.SetNativeSize();
+    }
+    void SetFoods()
+    {
+        Utils.RemoveAllChildsIn(foodsContainer);
+        List<string> all = Data.Instance.foodsData.GetFoodsByTag(active.tags);
+        if (all != null && all.Count < 1)
+            foods.SetActive(false);
+        else
+        {
+            foreach (string s in all)
+            {
+                FoodIconUI fi = Instantiate(foodIcon, foodsContainer);
+                fi.Init(s);
+            }
+            foods.SetActive(true);
+        }
+    }
+    void SetPremios()
+    {
+        Utils.RemoveAllChildsIn(premiosContainer);
+        premios.SetActive(false);
+
+        if (active.p1 > 0)
+            AddPremio("Puntaje Descorchados)",  active.p1);
+        if (active.p2 > 0)
+            AddPremio("Puntaje Tim Atkin", active.p2);
+        if (active.p3 > 0)
+            AddPremio("Puntaje James Suckling", active.p3);
+    }
+    void AddPremio(string name, int text)
+    {
+        PremioUI p = Instantiate(premioUI, premiosContainer);
+        p.Init(name, text);
+        premios.SetActive(true);
     }
 }

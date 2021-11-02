@@ -19,7 +19,6 @@ public class FilterButtonUI : MonoBehaviour
             prefix = "Desde $";
         else if (data.name == "$ Hasta")
             prefix = "Hasta $";
-        else prefix = data.name;
 
             field.text = prefix + " " + data.applied;
     }

@@ -17,6 +17,7 @@ public class Data : MonoBehaviour
     public ImagesLoader imagesLoader;
     public FiltersData filtersData;
     public SommelierData sommelierData;
+    public FoodsData foodsData;
 
     public static Data Instance
     {
