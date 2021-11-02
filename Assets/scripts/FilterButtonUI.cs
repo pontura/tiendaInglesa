@@ -13,7 +13,15 @@ public class FilterButtonUI : MonoBehaviour
     {
         this.data = data;
         this.ui = ui;
-        field.text = data.applied;
+        string prefix = "";
+
+        if (data.name == "$ Desde")
+            prefix = "Desde $";
+        else if (data.name == "$ Hasta")
+            prefix = "Hasta $";
+        else prefix = data.name;
+
+            field.text = prefix + " " + data.applied;
     }
     public void OnClicked()
     {

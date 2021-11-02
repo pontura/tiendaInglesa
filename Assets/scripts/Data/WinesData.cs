@@ -342,7 +342,7 @@ public class WinesData : DataLoader
                 foreach (string value in values)
                 {
                     debug_cepa = value;
-                    print(c.cepa.ToLower() + "_" + value.ToLower());
+                  //  print(c.cepa.ToLower() + "_" + value.ToLower());
                     if (c.cepa.ToLower() == value.ToLower())
                         matched = true;                                 
                 }

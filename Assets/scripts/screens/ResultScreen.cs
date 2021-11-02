@@ -7,7 +7,10 @@ public class ResultScreen : MainScreen
 {
     public Text nameField;
     public Text cepaField;
+    public Text paisField;
+    public Text marcaField;
     public Text textField;
+    public Text textField2;
     public Text priceField;
     public Image image;
 
@@ -31,26 +34,28 @@ public class ResultScreen : MainScreen
 
         nameField.text = active.name;
         cepaField.text = "<i>" + active.cepa + "</i>";
-
-        textField.text = active.brand;
         string salto = "\n\n";
-        if (active.pais != null && active.pais != "")
-            textField.text += salto+ "<b>País</b>\n" + active.pais;
+        paisField.text = active.pais;
+        marcaField.text = active.brand;
+
+        textField.text = active.text;
+        textField.text += "\n";
+
         if (active.p1>0)
-            textField.text += salto + "<b>Puntaje Descorchados:</b>\n" + active.p1;
+            textField2.text += salto + "<b>Puntaje Descorchados:</b>\n" + active.p1;
         if (active.p2 > 0)
-            textField.text += salto + "<b>Puntaje Tim Atkin:</b>\n" + active.p2;
+            textField2.text += salto + "<b>Puntaje Tim Atkin:</b>\n" + active.p2;
         if (active.p3 > 0)
-            textField.text += salto + "<b>Puntaje James Suckling:</b>\n" + active.p3;
+            textField2.text += salto + "<b>Puntaje James Suckling:</b>\n" + active.p3;
         if (active.tiempo_guardia != "")
-            textField.text += salto + "<b>Tiempo de guarda:</b>\n" + active.tiempo_guardia;
+            textField2.text += salto + "<b>Tiempo de guarda:</b>\n" + active.tiempo_guardia;
         if (active.temp != null && active.temp  != "")
-            textField.text += salto + "<b>Temperatura de servicio (°C):</b>\n" + active.temp;
+            textField2.text += salto + "<b>Temperatura de servicio (°C):</b>\n" + active.temp;
 
         if (active.premios != null && active.premios != "")
-            textField.text += salto + "<b>Premios:</b>\n" + active.premios;
+            textField2.text += salto + "<b>Premios:</b>\n" + active.premios;
 
-        textField.text += salto + active.text;
+
         StartCoroutine(Data.Instance.imagesLoader.C_LoadImage(active.id, 200, 200, OnLoaded, "large") );
     }
     void OnLoaded(Sprite sprite)

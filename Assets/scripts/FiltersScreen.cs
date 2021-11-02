@@ -67,11 +67,6 @@ public class FiltersScreen : MonoBehaviour
     {
         changed = true;
     }
-    void AddToDropDown(Dropdown dropDown, List<string> arr)
-    {
-        dropDown.ClearOptions();
-        dropDown.AddOptions(arr);
-    }
     public void OnSelect()
     {
         OnHide();

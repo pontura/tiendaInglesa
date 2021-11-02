@@ -24,6 +24,12 @@ public class FiltersData : MonoBehaviour
             filters = new List<string>();
             availableFilters = new List<string>();
         }
+        public void ResetAvailables()
+        {
+            availableFilters.Clear();
+            foreach (string f in filters)
+                availableFilters.Add(f);
+        }
     }
     private void Awake()
     {
@@ -150,6 +156,9 @@ public class FiltersData : MonoBehaviour
     }
     public void AddFilter(string filterName, string value)
     {
+        if (filterName == WinesData.DESDE || filterName == WinesData.HASTA)
+            ChangePrices(filterName, int.Parse(value));
+
         print("AddFilter " + filterName + " value: " + value);
         FilterData fd = GetFilter(filterName);        
         fd.applied = value;
@@ -159,6 +168,9 @@ public class FiltersData : MonoBehaviour
     }
     public void RemoveFilter(string filterName)
     {
+        if (filterName == WinesData.DESDE || filterName == WinesData.HASTA)
+            ResetPrices();
+
         FilterData fd = GetFilter(filterName);
         fd.applied = "";
         fd.availableFilters.Clear();
@@ -170,5 +182,26 @@ public class FiltersData : MonoBehaviour
         winesData.ResetFilters();
         ApplyFilters();
     }
-    
+    void ResetPrices()
+    {
+        GetFilter(WinesData.HASTA).ResetAvailables();
+        GetFilter(WinesData.DESDE).ResetAvailables();
+    }
+    void ChangePrices(string filterName, int value)
+    {
+        FilterData fd;
+        if(filterName == WinesData.DESDE)
+            fd = GetFilter(WinesData.HASTA);
+        else
+            fd = GetFilter(WinesData.DESDE);
+        fd.availableFilters.Clear();
+        foreach(string s in fd.filters)
+        {
+            int a = int.Parse(s);
+            if (a > value && filterName == WinesData.DESDE)
+                fd.availableFilters.Add(s);
+            else if (a < value && filterName == WinesData.HASTA)
+                fd.availableFilters.Add(s);
+        }
+    }
 }
