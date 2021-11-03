@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ScanScreen : MainScreen
 {
-    public ScanSimple scanSimple;
+   // public ScanSimple scanSimple;
     float lastReceivedInput = 0;
     float timeDelay = 0.25f;
     string currentCode = "";
@@ -36,12 +36,12 @@ public class ScanScreen : MainScreen
         OnScanReady();
     }
     public override void OnShow() {
-        scanSimple.gameObject.SetActive(true);
+      //  scanSimple.gameObject.SetActive(true);
         Invoke("InitDelayed", 1);
     }
     void InitDelayed()
     {
-        scanSimple.ClickStart();
+      //  scanSimple.ClickStart();
     }
     public void OnScanReady()
     {
