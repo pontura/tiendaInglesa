@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ListScreen : MainScreen
 {
     public ListItem listItem;
-    public Transform container;
+    public CascadeButtons cascade;
     PaginatorUI paginatorUI;
     public FiltersScreen filtersScreen;
     public bool automaticOpenFilters;
@@ -79,7 +79,7 @@ public class ListScreen : MainScreen
     void ShowResults(Vector2 from_to)
     {
         print("ShowResults");
-        Utils.RemoveAllChildsIn(container);
+        cascade.Reset();
         List<WinesData.Content> arr;
         if (Data.Instance.sommelierData.activeSommelierList)
         {
@@ -93,9 +93,11 @@ public class ListScreen : MainScreen
     }
     void Add(List<WinesData.Content> arr)
     {
+        cascade.Init();
         foreach (WinesData.Content c in arr)
         {
-            ListItem li = Instantiate(listItem, container);
+            ListItem li = Instantiate(listItem, cascade.transform);
+            cascade.Add(li.gameObject);
             li.Init(this, c);
         }
     }

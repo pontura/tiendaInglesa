@@ -207,10 +207,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FilterButton
       objectReference: {fileID: 0}
-    - target: {fileID: 3666515762456464433, guid: 9876ac2a3eaab924086314bf4707717b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9876ac2a3eaab924086314bf4707717b, type: 3}
 --- !u!224 &777840204684034454 stripped

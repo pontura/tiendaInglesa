@@ -11,6 +11,8 @@ public class FoodIconUI : MonoBehaviour
     public void Init(string name)
     {
         field.text = name;
-        image.sprite = Resources.Load<Sprite>("foods/" + name);
+        string v = name.Replace("ñ", "n");
+        image.sprite = Resources.Load<Sprite>("foods/" + v);
+        image.SetNativeSize();
     }
 }

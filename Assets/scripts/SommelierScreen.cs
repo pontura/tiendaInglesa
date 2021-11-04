@@ -16,6 +16,7 @@ public class SommelierScreen : MainScreen
 
     public override void OnShow()
     {
+        id = 0;
         base.OnShow();
         historial.Clear();
         texts.Clear();

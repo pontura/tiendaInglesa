@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ListItem : MonoBehaviour
 {
     [SerializeField] Text nameField;
+    [SerializeField] Text descField;
     [SerializeField] Text priceField;
     [SerializeField] Image image;
     WinesData.Content content;
@@ -15,8 +16,9 @@ public class ListItem : MonoBehaviour
     {
         this.manager = manager;
         this.content = content;
-        nameField.text = "<b>" + content.name + "</b>";
-        nameField.text += "\n" + content.pais;
+        nameField.text = content.name;
+        descField.text = "<i>Cepa</i> " + content.cepa + ". <i>Bodega</i> " + content.brand + "\n";
+        descField.text += "<i>País</i> " + content.pais; //"\n" + 
         priceField.text = "$" + content.price;
         StartCoroutine( Data.Instance.imagesLoader.C_LoadImage(content.id, 60, 60, OnLoaded));
     }
