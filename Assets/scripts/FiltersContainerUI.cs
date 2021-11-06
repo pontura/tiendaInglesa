@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FiltersContainerUI : MonoBehaviour
 {
+
+    [SerializeField] GameObject filterButton;
     [SerializeField] FilterButtonUI button;
     [SerializeField] Transform container;
 
@@ -17,14 +19,20 @@ public class FiltersContainerUI : MonoBehaviour
     }
     void OnAddFilter(FiltersData.FilterData filterData)
     {
+        filterButton.transform.SetParent(transform);
         FilterButtonUI newButton = Instantiate(button, container);
         newButton.Init(this, filterData);
+        filterButton.transform.SetParent(container);
     }
     public void Init(List<FiltersData.FilterData> all)
     {
+        filterButton.transform.SetParent(transform);
         Utils.RemoveAllChildsIn(container);
+
         foreach (FiltersData.FilterData filterData in all)
             OnAddFilter(filterData);
+
+        filterButton.transform.SetParent(container);
     }
     public void RemoveItem(FilterButtonUI thisButton)
     {
@@ -33,6 +41,8 @@ public class FiltersContainerUI : MonoBehaviour
     }
     public void Reset()
     {
+        filterButton.transform.SetParent(transform);
         Utils.RemoveAllChildsIn(container);
+        filterButton.transform.SetParent(container);
     }
 }

@@ -5,8 +5,8 @@ using System;
 
 public class FiltersData : MonoBehaviour
 {
-    string[] price_from = new string[] { "500", "750" , "1000"};
-    string[] price_to = new string[] { "500", "750", "1000", "1300" };
+    string[] price_from = new string[] { "400", "600" , "800", "1000", "1200"};
+    string[] price_to = new string[] { "600", "800", "1000", "1200", "1400" };
 
     WinesData winesData;
     public List<FilterData> filters;

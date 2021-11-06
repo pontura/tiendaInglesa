@@ -182,6 +182,8 @@ public class WinesData : DataLoader
                         if (colID == 0)
                         {
                             contentLine = GetSpecificWine(value);
+                            if (contentLine == null)
+                                print(rowID + " no hay vino: " + value);
                         }
                         else if (contentLine != null) {
                             if (colID == 1)
@@ -195,6 +197,7 @@ public class WinesData : DataLoader
                             if (colID == 3)
                             {
                                 contentLine.cepa = value.ToLower();
+                                print(rowID + " " + contentLine.name + " cepa: " + contentLine.cepa);
                                 CheckForNewFilter(CEPAS, contentLine.cepa);
                             }
                             else if (colID == 4)
@@ -361,23 +364,31 @@ public class WinesData : DataLoader
             }
             else if (name == WinesData.TAGS)
             {
-                bool hasAll = true;
-                foreach (string value in values)
-                {
-                    bool hasIt = false;
-                    foreach (string tag in c.tags)
-                    {
-                        if (tag.ToLower() == value.ToLower())
-                            hasIt = true;
-                    }
-                    if (!hasIt)
-                        hasAll = false;
-                }
-                if (!hasAll)
+                if (!HasAllTags(values, c.tags))
                     toRemove.Add(c);
             }
         }
         foreach (Content c in toRemove)
             contentFiltered.Remove(c);
+    }
+    bool HasAllTags(List<string> values, List<string> tags)
+    {
+        foreach (string value in values)
+        {
+            if (!HasTag(tags, value))
+                return false;
+        }
+        return true;
+    }
+    bool HasTag(List<string> tags, string value)
+    {
+        foreach (string tag in tags)
+        {
+            if (tag.ToLower().Equals(value.ToLower()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
