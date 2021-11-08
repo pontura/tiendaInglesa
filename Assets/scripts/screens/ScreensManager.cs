@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScreensManager : MonoBehaviour
 {
-    [SerializeField] MainScreen activeScreen;
+    public MainScreen activeScreen;
     public MainScreen lastActiveScreen;
     [SerializeField] MainScreen.types initialScreenType;
     [SerializeField] MainScreen[] screens;

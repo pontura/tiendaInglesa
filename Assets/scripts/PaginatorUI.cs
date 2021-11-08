@@ -14,6 +14,7 @@ public class PaginatorUI : MonoBehaviour
     public int totalPags;
     public int size = 40;
     ListScreen listScreen;
+
     private void Awake()
     {
         listScreen = GetComponent<ListScreen>();
@@ -22,9 +23,15 @@ public class PaginatorUI : MonoBehaviour
     {
         id = 1;
         total = Data.Instance.winesData.contentFiltered.Count;
-        totalPags = (int)Mathf.Ceil((float)total / (float)size);
+
+        if (total < size)
+            panel.SetActive(false);
+        else
+        {
+            totalPags = (int)Mathf.Ceil((float)total / (float)size);            
+            panel.SetActive(true);
+        }
         SetValues();
-        panel.SetActive(true);
     }
     void SetValues()
     {

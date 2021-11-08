@@ -43,6 +43,7 @@ public class FiltersData : MonoBehaviour
         filters.Add(new FilterData(WinesData.CEPAS));
         filters.Add(new FilterData(WinesData.BRANDS));
         filters.Add(new FilterData(WinesData.PAISES));
+        filters.Add(new FilterData(WinesData.EDAD));
     }
 
     void AddPriceData(string name, string[] values)
@@ -91,12 +92,9 @@ public class FiltersData : MonoBehaviour
         string cepas_appliedFilter = GetFilter(WinesData.CEPAS).applied;
         string paises_appliedFilter = GetFilter(WinesData.PAISES).applied;
         string brands_appliedFilter = GetFilter(WinesData.BRANDS).applied;
+        string edad_appliedFilter = GetFilter(WinesData.EDAD).applied;
 
-        int total = 0;
-        foreach (WinesData.Content c in winesData.contentFiltered)
-            if(c.cepa == "pinot noir")
-                 total++;
-        print("Total " + total);
+
         //print(cepas_appliedFilter + " " + paises_appliedFilter + " " + brands_appliedFilter + "count " + winesData.contentFiltered.Count);
         int i = winesData.contentFiltered.Count;
         while (i > 0)
@@ -110,6 +108,7 @@ public class FiltersData : MonoBehaviour
                   (cepas_appliedFilter != "" && thisContentFiltered.cepa != cepas_appliedFilter)
                || (brands_appliedFilter != "" && thisContentFiltered.brand != brands_appliedFilter)
                || (paises_appliedFilter != "" && thisContentFiltered.pais != paises_appliedFilter)
+               || (edad_appliedFilter != "" && thisContentFiltered.tiempo_guardia != edad_appliedFilter)
             )
             {
                 //print(thisContentFiltered.cepa + " cepa_app: " + cepas_appliedFilter + " pais: " + paises_appliedFilter + " brands:" + brands_appliedFilter);
@@ -118,8 +117,15 @@ public class FiltersData : MonoBehaviour
             else
                 CheckForNewAvailableFilters(thisContentFiltered);
         }
+
+        ArrangeFiltered();
         //print("winesData.contentFiltered.Count: " + winesData.contentFiltered.Count);
 
+    }
+    public void ArrangeFiltered()
+    {
+        print("________ArrangeFiltered");
+        winesData.contentFiltered.Sort((a, b) => a.price.CompareTo(b.price));
     }
     bool FilteredByPrice(WinesData.Content content, int desde, int hasta)
     {
@@ -144,6 +150,8 @@ public class FiltersData : MonoBehaviour
                 AddAvailable(fd.availableFilters, c.pais);
             else if (fd.name == WinesData.BRANDS && c.brand != "")
                 AddAvailable(fd.availableFilters, c.brand);
+            else if (fd.name == WinesData.EDAD && c.tiempo_guardia != "")
+                AddAvailable(fd.availableFilters, c.tiempo_guardia);
         }
     }
     void AddAvailable(List<string> arr, string value)

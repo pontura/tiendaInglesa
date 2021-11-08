@@ -10,8 +10,8 @@ public class FoodIconUI : MonoBehaviour
 
     public void Init(string name)
     {
-        field.text = name;
-        string v = name.Replace("ñ", "n");
+        field.text = name.Replace("-", " ");
+        string v = name.Replace("ñ", "n");        
         image.sprite = Resources.Load<Sprite>("foods/" + v);
         image.SetNativeSize();
     }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ResultScreen : MainScreen
 {
+    [SerializeField] GameObject guarda_temp;
     [SerializeField] GameObject guarda;
     [SerializeField] GameObject temp;
     [SerializeField] GameObject foods;
@@ -14,6 +15,11 @@ public class ResultScreen : MainScreen
     public Text cepaField;
     public Text paisField;
     public Text marcaField;
+
+    public GameObject title_cepaField;
+    public GameObject title_paisField;
+    public GameObject title_brandField;
+
     public Text textField;
 
     public Text priceField;
@@ -28,6 +34,7 @@ public class ResultScreen : MainScreen
 
     [SerializeField] Transform premiosContainer;
     [SerializeField] PremioUI premioUI;
+    [SerializeField] GameObject bottle;
 
     public override void OnBack()
     {
@@ -43,31 +50,60 @@ public class ResultScreen : MainScreen
     WinesData.Content active ;
     public override void OnShow()
     {
+        bottle.SetActive(true);
         base.OnShow();
         active = Data.Instance.winesData.active;
 
         priceField.text = "$" + active.price;
 
         nameField.text = active.name;
-        cepaField.text = "<i>" + active.cepa + "</i>";
+        if (active.cepa == null || active.cepa.Length < 2)
+            title_cepaField.gameObject.SetActive(false);
+        else
+        {
+            title_cepaField.gameObject.SetActive(true);
+            cepaField.text = active.cepa;
+        }
         string salto = "\n\n";
-        paisField.text = active.pais;
-        marcaField.text = active.brand;
 
-        textField.text = active.text;
+        if (active.pais == null || active.pais.Length < 2)
+            title_paisField.gameObject.SetActive(false);
+        else
+        {
+            title_paisField.gameObject.SetActive(true);
+            paisField.text = active.pais;
+        }
+
+        if (active.brand == null || active.brand.Length < 2)
+            title_brandField.gameObject.SetActive(false);
+        else
+        {
+            title_brandField.gameObject.SetActive(true);
+            marcaField.text = active.brand;
+        }
+
+        textField.text = "\n" + active.text;
         textField.text += "\n";
 
+        bool show_guarda_temp = false;
         if (active.tiempo_guardia != null && active.tiempo_guardia != "")
         {
             guardaField.text = active.tiempo_guardia;
             guarda.SetActive(true);
+            show_guarda_temp = true;
         } else guarda.SetActive(false);
 
         if (active.temp != null && active.temp != "")
         {
             temp.SetActive(true);
             tempField.text = active.temp;
-         } else temp.SetActive(false);
+            show_guarda_temp = true;
+        } else temp.SetActive(false);
+
+        if(show_guarda_temp)
+            guarda_temp.SetActive(true);
+        else
+            guarda_temp.SetActive(false);
 
         StartCoroutine(Data.Instance.imagesLoader.C_LoadImage(active.id, 200, 200, OnLoaded, "large") );
 
@@ -76,8 +112,10 @@ public class ResultScreen : MainScreen
     }
     void OnLoaded(Sprite sprite)
     {
+        bottle.SetActive(false);
         image.sprite = sprite;
         image.SetNativeSize();
+        image.GetComponent<Animation>().Play();
     }
     void SetFoods()
     {
@@ -100,13 +138,26 @@ public class ResultScreen : MainScreen
             foods.SetActive(false);
         else
         {
+            added.Clear();
             foreach (string s in all)
             {
-                FoodIconUI fi = Instantiate(foodIcon, foodsContainer);
-                fi.Init(s);
+                if(!AlreadyAdded(s))
+                {
+                    added.Add(s);
+                    FoodIconUI fi = Instantiate(foodIcon, foodsContainer);
+                    fi.Init(s);
+                }
             }
             foods.SetActive(true);
         }
+    }
+    public List<string> added;
+    bool AlreadyAdded(string newName)
+    {
+        foreach (string s in added)
+            if (s == newName)
+                return true;
+        return false;
     }
     void SetPremios()
     {

@@ -42,6 +42,7 @@ public class FiltersScreen : MonoBehaviour
     }
     void OnRemoveFilter(FiltersData.FilterData data)
     {
+        print("OnRemoveFilter " + data.name);
         Data.Instance.filtersData.RemoveFilter(data.name);
         Refresh();
         OnSelect();
@@ -53,6 +54,8 @@ public class FiltersScreen : MonoBehaviour
         int total = 0;
         foreach (FiltersData.FilterData fd in Data.Instance.filtersData.filters)
         {
+         //   print(fd.applied + fd.name + " count: " + fd.availableFilters.Count);
+
             if (fd.applied == "" && fd.availableFilters.Count>1)
             {
                 FilterDropDownUI fdd = Instantiate(filterDropDownUI, container);

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class MainScreen : MonoBehaviour
 {
+
+    public bool clicked;
+    public Animation anim;
+
     public types type;
     public enum types
     {
@@ -15,6 +19,14 @@ public class MainScreen : MonoBehaviour
         SOMMELIER,
         QUESTIONS,
         MAIN_MENU
+    }
+    private void Awake()
+    {
+        anim = GetComponent<Animation>();
+    }
+    private void OnEnable()
+    {
+        clicked = false;
     }
     public virtual void OnBack()
     {

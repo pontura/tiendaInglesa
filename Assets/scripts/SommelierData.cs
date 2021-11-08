@@ -21,6 +21,7 @@ public class SommelierData : DataLoader
         public List<string> paises;
         public List<string> exclusivos;
         public List<string> cepas;
+        public List<string> edad;
     }
     [Serializable]
     public class Content
@@ -211,6 +212,7 @@ public class SommelierData : DataLoader
         allFiltersActive.paises = new List<string>();
         allFiltersActive.tags = new List<string>();
         allFiltersActive.exclusivos = new List<string>();
+        allFiltersActive.edad = new List<string>();
 
         foreach (SommelierData.RespuestasContent active in allActive)
         {
@@ -231,7 +233,12 @@ public class SommelierData : DataLoader
             if (active.tags != null)
             {
                 foreach (string s in active.tags)
-                    allFiltersActive.tags.Add(s);
+                {
+                    if(s == "joven" || s == "guarda")
+                        allFiltersActive.edad.Add(s);
+                    else
+                        allFiltersActive.tags.Add(s);
+                }
             }
             if (active.exclusivos != null)
             {
@@ -258,6 +265,11 @@ public class SommelierData : DataLoader
             Data.Instance.winesData.ApplySommelierFilter(WinesData.TAGS, allFiltersActive.tags, true);
 
         print("5 TAGS ______" + Data.Instance.winesData.contentFiltered.Count);
+
+        if (allFiltersActive.edad.Count > 0)
+            Data.Instance.winesData.ApplySommelierFilter(WinesData.EDAD, allFiltersActive.edad, true);
+
+        print("6 edad______" + Data.Instance.winesData.contentFiltered.Count);
 
     }
 

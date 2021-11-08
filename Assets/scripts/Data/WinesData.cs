@@ -16,6 +16,7 @@ public class WinesData : DataLoader
     public static string TAGS = "Tags";
     public static string BRANDS = "Marca";
     public static string PAISES = "País";
+    public static string EDAD = "Edad";
 
     public static string DESDE = "$ Desde";
     public static string HASTA = "$ Hasta";
@@ -197,7 +198,7 @@ public class WinesData : DataLoader
                             if (colID == 3)
                             {
                                 contentLine.cepa = value.ToLower();
-                                print(rowID + " " + contentLine.name + " cepa: " + contentLine.cepa);
+                               // print(rowID + " " + contentLine.name + " cepa: " + contentLine.cepa);
                                 CheckForNewFilter(CEPAS, contentLine.cepa);
                             }
                             else if (colID == 4)
@@ -211,6 +212,7 @@ public class WinesData : DataLoader
                             {
                                 string v = value.Replace(" ", "").ToLower();
                                 contentLine.pais = v;
+                                CheckForNewFilter(PAISES, contentLine.pais);
                             }
                             else if (colID == 6)
                             {
@@ -220,6 +222,7 @@ public class WinesData : DataLoader
                                 else if (v == "4 a 6 años" || v == "Mas de 6 años")
                                     contentLine.tags.Add("guarda");
                                 contentLine.tiempo_guardia = v;
+                                CheckForNewFilter(EDAD, contentLine.tiempo_guardia);
                             }
                             else if (colID == 7)
                             {
@@ -367,9 +370,24 @@ public class WinesData : DataLoader
                 if (!HasAllTags(values, c.tags))
                     toRemove.Add(c);
             }
+            else if (name == WinesData.EDAD)
+            {
+                foreach (string value in values)
+                {
+                    bool isJoven = c.tiempo_guardia.Contains("3");
+                    if (isJoven && value == "joven")
+                        matched = true;
+                    else if (!isJoven && value == "guarda")
+                        matched = true;
+                }
+                if (!matched)
+                    toRemove.Add(c);
+            }
         }
         foreach (Content c in toRemove)
             contentFiltered.Remove(c);
+
+        filtersData.ArrangeFiltered();
     }
     bool HasAllTags(List<string> values, List<string> tags)
     {
