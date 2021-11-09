@@ -78,7 +78,7 @@ public class ListScreen : MainScreen
     } 
     void ShowResults(Vector2 from_to)
     {
-        print("ShowResults");
+       // print("ShowResults");
         cascade.Reset();
         List<WinesData.Content> arr;
         if (Data.Instance.sommelierData.activeSommelierList)

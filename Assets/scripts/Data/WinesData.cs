@@ -184,7 +184,9 @@ public class WinesData : DataLoader
                         {
                             contentLine = GetSpecificWine(value);
                             if (contentLine == null)
-                                print(rowID + " no hay vino: " + value);
+                            {
+                             //   print(rowID + " no hay vino: " + value);
+                            }
                         }
                         else if (contentLine != null) {
                             if (colID == 1)
@@ -300,9 +302,11 @@ public class WinesData : DataLoader
     }
     public void SetActive(string codebar)
     {
+        active = null;
         foreach (Content c in content)
             if (c.codebar == codebar)
                 active = c;
+
     }
     void CheckForNewFilter( string filterName, string name)
     {

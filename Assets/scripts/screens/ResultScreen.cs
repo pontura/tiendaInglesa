@@ -122,6 +122,7 @@ public class ResultScreen : MainScreen
         Utils.RemoveAllChildsIn(foodsContainer);
         List<string> all = Data.Instance.foodsData.GetFoodsByTag(active.tags);
         int qty = all.Count;
+       // print("SEt foods qty by tags: " + qty + " active.cepa: " + active.cepa);
         if (qty < 4)
         {
             List<string> allCepas = Data.Instance.foodsData.GetFoodByCepa(active.cepa);
@@ -130,7 +131,7 @@ public class ResultScreen : MainScreen
                 if (qty < 4)
                     all.Add(s);
                 qty++;
-                print("Agrega por cepa: " + active.cepa + " : " + s);
+                //print("Agrega por cepa: " + active.cepa + " : " + s);
             }
         }
 

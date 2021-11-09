@@ -8,6 +8,7 @@ public class ScreensManager : MonoBehaviour
     public MainScreen lastActiveScreen;
     [SerializeField] MainScreen.types initialScreenType;
     [SerializeField] MainScreen[] screens;
+    public TimerToReset timerToReset;
 
     public void Init()
     {
@@ -26,11 +27,12 @@ public class ScreensManager : MonoBehaviour
             {
                 activeScreen = ms;
                 ms.Show();
+                timerToReset.SetScreen(ms.type);
             }
             else
                 ms.Hide();
         }
-            
+
     }
     public void Back()
     {
@@ -50,11 +52,16 @@ public class ScreensManager : MonoBehaviour
             OnScanReady(value);
             Debug.Log( "Llegó del lector: " + value);
         }
+        if (Input.GetKeyDown(KeyCode.Space)) 
+            OnScanReady("780433ss0006717");
     }
     public void OnScanReady(string codebar)
     {
         Data.Instance.sommelierData.Reset();
         Data.Instance.winesData.SetActive(codebar);
-        Game.Instance.screensManager.Show(MainScreen.types.RESULT);
+        if(Data.Instance.winesData.active == null)
+            Game.Instance.screensManager.Show(MainScreen.types.ERROR);
+        else
+            Game.Instance.screensManager.Show(MainScreen.types.RESULT);
     }
 }

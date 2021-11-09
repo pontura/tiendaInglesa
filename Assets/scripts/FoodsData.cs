@@ -40,9 +40,11 @@ public class FoodsData : MonoBehaviour
         foreach(FoodData fd in all)
         {
             string s = fd.cepas.Replace(" ", "").ToLower();
+            s = fd.cepas.Replace("-", " ");
             string[] allArr = s.Split(","[0]);
             foreach (string cepa in allArr)
             {
+               // print(cepa + " : " + _cepa);
                 if (cepa == _cepa.ToLower())
                     arr.Add(fd.name);
             }

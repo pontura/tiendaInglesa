@@ -6,11 +6,14 @@ using UnityEngine.UI;
 public class SommelierScreen : MainScreen
 {
     [SerializeField] SommelierButton button;
-    [SerializeField] Transform container;
+    [SerializeField] CascadeButtons cascade;
     [SerializeField] Text field;
+
+    [SerializeField] Scrollbar scrollBar;
 
     public List<string> historial;
     public List<string> texts;
+
 
     public int id;
 
@@ -40,15 +43,18 @@ public class SommelierScreen : MainScreen
     }
     void SetOn(string questionID)
     {
+        cascade.Init();
         historial.Add( questionID );
-        Utils.RemoveAllChildsIn(container);
         SommelierData.Content content = Data.Instance.sommelierData.GetContent(questionID);
         field.text = content.question;
         foreach (SommelierData.RespuestasContent c in content.respuestas)
         {
-            SommelierButton sb = Instantiate(button, container);
+            SommelierButton sb = Instantiate(button,cascade.transform);
+            cascade.Add(sb.gameObject);
             sb.Init(this, c);
+
         }
+        scrollBar.value = 1;
     }
     public void OnAnswer(SommelierData.RespuestasContent content)
     {

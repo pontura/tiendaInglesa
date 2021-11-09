@@ -6,6 +6,7 @@ public class CascadeButtons : MonoBehaviour
 {
     public List<GameObject> all;
     public float delay = 0.02f;
+
     public void Init()
     {
         Reset();

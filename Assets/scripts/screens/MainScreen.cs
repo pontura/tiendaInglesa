@@ -18,7 +18,8 @@ public class MainScreen : MonoBehaviour
         RESULT,
         SOMMELIER,
         QUESTIONS,
-        MAIN_MENU
+        MAIN_MENU,
+        ERROR
     }
     private void Awake()
     {

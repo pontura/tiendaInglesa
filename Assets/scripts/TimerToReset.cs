@@ -16,7 +16,27 @@ public class TimerToReset : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             timer = 0;
     }
-
+    public void SetScreen(MainScreen.types type)
+    {
+        switch(type)
+        {
+            case MainScreen.types.ERROR:
+                time_to_reset = 6;
+                break;
+            case MainScreen.types.RESULT:
+                time_to_reset = 70;
+                break;
+            case MainScreen.types.MAIN_MENU:
+                time_to_reset = 15;
+                break;
+            case MainScreen.types.SPLASH:
+                time_to_reset = 10000;
+                break;
+            default:
+                time_to_reset = 40;
+                break;
+        }
+    }
     void Loop()
     {
         timer++;

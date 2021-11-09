@@ -124,7 +124,7 @@ public class FiltersData : MonoBehaviour
     }
     public void ArrangeFiltered()
     {
-        print("________ArrangeFiltered");
+      //  print("________ArrangeFiltered");
         winesData.contentFiltered.Sort((a, b) => a.price.CompareTo(b.price));
     }
     bool FilteredByPrice(WinesData.Content content, int desde, int hasta)
@@ -167,7 +167,7 @@ public class FiltersData : MonoBehaviour
         if (filterName == WinesData.DESDE || filterName == WinesData.HASTA)
             ChangePrices(filterName, int.Parse(value));
 
-        print("AddFilter " + filterName + " value: " + value);
+        //print("AddFilter " + filterName + " value: " + value);
         FilterData fd = GetFilter(filterName);        
         fd.applied = value;
         winesData.ResetFilters();
