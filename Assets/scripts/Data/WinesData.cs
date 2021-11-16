@@ -44,6 +44,8 @@ public class WinesData : DataLoader
         public int p2;
         public int p3;
         public string premios;
+
+        public bool isExclusive;
     }
     private void Awake()
     {
@@ -151,7 +153,11 @@ public class WinesData : DataLoader
                 string t = value.Replace(" ", "").ToLower();
                 string[] arr = t.Split(","[0]);
                 foreach (string s in arr)
+                {
+                    if (s.ToLower() == "e")
+                        contentLine.isExclusive = true;
                     contentLine.tags.Add(s);
+                }
                 break;  
             case 8:
                 value = value.ToLower();
@@ -230,7 +236,11 @@ public class WinesData : DataLoader
                                 string v = value.Replace(" ", "").ToLower();
                                 string[] arr = v.Split(","[0]);
                                 foreach(string s in arr)
+                                {
+                                    if (s.ToLower() == "e")
+                                        contentLine.isExclusive = true;
                                     contentLine.tags.Add(s);
+                                }
                             }
                             else if (colID == 5)
                             {
@@ -387,7 +397,7 @@ public class WinesData : DataLoader
             {
                 foreach (string value in values)
                 {
-                    if (c.pais.ToLower() == value.ToLower())
+                    if (c.pais != null && c.pais.ToLower() == value.ToLower())
                         matched = true;
                 }
                 if (!matched)
