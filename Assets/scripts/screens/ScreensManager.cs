@@ -39,24 +39,66 @@ public class ScreensManager : MonoBehaviour
         if(lastActiveScreen != activeScreen)
         Show(lastActiveScreen.type);
     }
+    float lastTimeScanned = 0;
+    public string codebarReaded;
+    float initScanningTime = 0;
+    float timer = 0;
+    bool scanning = false;
+    string lastStringAdded = "";
 
-    float lastBarcodeTimer = 0;
     void Update()
     {
-        if (Input.inputString != "" && (lastBarcodeTimer == 0 || lastBarcodeTimer+1>Time.time))
+        if (lastTimeScanned != 0 && lastTimeScanned + 2 > Time.time)
+            return;
+        if (Input.inputString != "" )
         {
-            lastBarcodeTimer = Time.time;
-            string value = Input.inputString;
-            value = value.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
-            Events.OnScanDone(value);
-            OnScanReady(value);
-            Debug.Log( "Llegó del lector: " + value);
+            if (initScanningTime == 0)
+            {
+                scanning = true;
+                StartScanning();
+            }
+            if (!scanning)
+                return;
+            else if (Time.time > initScanningTime + 0.1f)
+            {
+                DoneScanning();
+            }
+            else
+            {
+                if (lastStringAdded == Input.inputString)
+                    return;
+                lastStringAdded = Input.inputString;
+                codebarReaded += lastStringAdded;
+                if(codebarReaded.Contains("\n"))
+                    DoneScanning();
+            }
         }
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space)) 
             OnScanReady("780433ss0006717");
+#endif
+    }
+    void StartScanning()
+    {
+        initScanningTime = Time.time;
+    }
+    void DoneScanning()
+    {
+        lastStringAdded = "";
+        lastTimeScanned = Time.time;
+        scanning = false;
+        initScanningTime = 0;
+
+        codebarReaded = codebarReaded.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
+
+        Events.OnScanDone(codebarReaded);
+        OnScanReady(codebarReaded);
+        Debug.Log("Llegó del lector: " + codebarReaded);
+        codebarReaded = "";
     }
     public void OnScanReady(string codebar)
     {
+        codebarReaded = codebar;
         Data.Instance.sommelierData.Reset();
         Data.Instance.winesData.SetActive(codebar);
         if(Data.Instance.winesData.active == null)

@@ -56,13 +56,13 @@ public class ResultScreen : MainScreen
 
         priceField.text = "$" + active.price;
 
-        nameField.text = active.name;
+        nameField.text = active.name.ToUpper();
         if (active.cepa == null || active.cepa.Length < 2)
             title_cepaField.gameObject.SetActive(false);
         else
         {
             title_cepaField.gameObject.SetActive(true);
-            cepaField.text = active.cepa;
+            cepaField.text = Utils.SetFirstLetterToUpper(active.cepa);
         }
         string salto = "\n\n";
 
@@ -71,7 +71,7 @@ public class ResultScreen : MainScreen
         else
         {
             title_paisField.gameObject.SetActive(true);
-            paisField.text = active.pais;
+            paisField.text = Utils.SetFirstLetterToUpper(active.pais);
         }
 
         if (active.brand == null || active.brand.Length < 2)
@@ -79,7 +79,7 @@ public class ResultScreen : MainScreen
         else
         {
             title_brandField.gameObject.SetActive(true);
-            marcaField.text = active.brand;
+            marcaField.text = Utils.SetFirstLetterToUpper(active.brand);
         }
 
         textField.text = "\n" + active.text;

@@ -300,8 +300,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 74.98887, y: 26.84}
-  m_SizeDelta: {x: 116.3778, y: 30}
+  m_AnchoredPosition: {x: 10.2, y: 26.84}
+  m_SizeDelta: {x: 133.6, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6961652872661408992
 CanvasRenderer:
@@ -338,7 +338,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 2
     m_MaxSize: 7
-    m_Alignment: 3
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -379,8 +379,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66.1, y: 36.7}
-  m_SizeDelta: {x: 98.6, y: 30}
+  m_AnchoredPosition: {x: 10.2, y: 36.7}
+  m_SizeDelta: {x: 133.6, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6961652873695278803
 CanvasRenderer:
@@ -417,7 +417,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 10
-    m_Alignment: 3
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -457,7 +457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6048777082224588549, guid: 2c00e60ac22065c46a8b34ea0b2fe3f7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -2.399994
+      value: 101.4
       objectReference: {fileID: 0}
     - target: {fileID: 6048777082224588549, guid: 2c00e60ac22065c46a8b34ea0b2fe3f7, type: 3}
       propertyPath: m_AnchoredPosition.y

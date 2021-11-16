@@ -17,7 +17,7 @@ public class FilterDropDownUI : MonoBehaviour
         this.ui = ui;
         title.text = "" ;// filterData.name;
         dropDown.AddOptions(new List<string>() { filterData.name });
-        dropDown.AddOptions(filterData.availableFilters);
+        dropDown.AddOptions(filterData.GetAvailableFilters(filterData.name));
         dropDown.onValueChanged.AddListener(delegate {
             OnChanged();
         });
@@ -32,7 +32,7 @@ public class FilterDropDownUI : MonoBehaviour
     {
         if (dropDown.value == 0) return;
         string value = dropDown.options[dropDown.value].text;        
-        Data.Instance.filtersData.AddFilter(filterData.name, value);
+        Data.Instance.filtersData.AddFilter(filterData.name, value.ToLower());
         ui.Refresh();
     }
 }

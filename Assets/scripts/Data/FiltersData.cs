@@ -18,6 +18,16 @@ public class FiltersData : MonoBehaviour
         public string applied = "";
         public List<string> filters;
         public List<string> availableFilters;
+
+        public List<string> GetAvailableFilters(string filterName)
+        {
+            List<string> arr = Data.Instance.filtersData.GetFilter(filterName).availableFilters;
+            arr.Sort((a, b) => a.CompareTo(b));
+            for (int a = 0; a<arr.Count; a++)
+                arr[a] = Utils.SetFirstLetterToUpper(arr[a]);
+            return arr;
+        }
+
         public FilterData(string name)
         {
             this.name = name;
@@ -43,9 +53,15 @@ public class FiltersData : MonoBehaviour
         filters.Add(new FilterData(WinesData.CEPAS));
         filters.Add(new FilterData(WinesData.BRANDS));
         filters.Add(new FilterData(WinesData.PAISES));
-        filters.Add(new FilterData(WinesData.EDAD));
-    }
+        filters.Add(new FilterData(WinesData.GUARDA));
 
+    }
+    public void ArrangeFilters()
+    {
+        GetFilter(WinesData.PAISES).filters.Sort((a, b) => a.CompareTo(b));
+        GetFilter(WinesData.BRANDS).filters.Sort((a, b) => a.CompareTo(b));
+        GetFilter(WinesData.CEPAS).filters.Sort((a, b) => a.CompareTo(b));
+    }
     void AddPriceData(string name, string[] values)
     {
         FilterData fd = new FilterData(name);
@@ -92,7 +108,7 @@ public class FiltersData : MonoBehaviour
         string cepas_appliedFilter = GetFilter(WinesData.CEPAS).applied;
         string paises_appliedFilter = GetFilter(WinesData.PAISES).applied;
         string brands_appliedFilter = GetFilter(WinesData.BRANDS).applied;
-        string edad_appliedFilter = GetFilter(WinesData.EDAD).applied;
+        string edad_appliedFilter = GetFilter(WinesData.GUARDA).applied;
 
 
         //print(cepas_appliedFilter + " " + paises_appliedFilter + " " + brands_appliedFilter + "count " + winesData.contentFiltered.Count);
@@ -150,7 +166,7 @@ public class FiltersData : MonoBehaviour
                 AddAvailable(fd.availableFilters, c.pais);
             else if (fd.name == WinesData.BRANDS && c.brand != "")
                 AddAvailable(fd.availableFilters, c.brand);
-            else if (fd.name == WinesData.EDAD && c.tiempo_guardia != "")
+            else if (fd.name == WinesData.GUARDA && c.tiempo_guardia != "")
                 AddAvailable(fd.availableFilters, c.tiempo_guardia);
         }
     }

@@ -19,14 +19,14 @@ public class ListItem : MonoBehaviour
         thumb.enabled = true;
         this.manager = manager;
         this.content = content;
-        nameField.text = content.name;
-
+        string salto = "\n";
+        descField.text = "<b>" + content.name.ToUpper() + "</b>" + salto;
         if (content.cepa != null && content.cepa.Length > 2)
-            descField.text = "Cepa: " + content.cepa;
+            descField.text += "Cepa: " + Utils.SetFirstLetterToUpper(content.cepa) + ". ";
         if (content.brand != null && content.brand.Length > 2)
-            descField.text += ". Bodega: " + content.brand + "\n";
+            descField.text += "Bodega: " + Utils.SetFirstLetterToUpper(content.brand);
         if (content.pais != null && content.pais.Length > 2)
-            descField.text += "País: " + content.pais; //"\n" + 
+            descField.text += salto + "País: " + Utils.SetFirstLetterToUpper(content.pais);
 
         priceField.text = "$" + content.price;
         StartCoroutine( Data.Instance.imagesLoader.C_LoadImage(content.id, 60, 60, OnLoaded));

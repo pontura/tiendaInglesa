@@ -16,7 +16,7 @@ public class WinesData : DataLoader
     public static string TAGS = "Tags";
     public static string BRANDS = "Marca";
     public static string PAISES = "País";
-    public static string EDAD = "Edad";
+    public static string GUARDA = "Guarda";
 
     public static string DESDE = "$ Desde";
     public static string HASTA = "$ Hasta";
@@ -69,6 +69,7 @@ public class WinesData : DataLoader
     {
         OnDataListadoLoaded(d);
         Data.Instance.spreadsheetLoader.LoadFromTo(winesTexts, OnWinesTextsLoaded);
+        filtersData.ArrangeFilters();
     }
     void OnWinesTextsLoaded(List<SpreadsheetLoader.Line> d)
     {
@@ -124,7 +125,6 @@ public class WinesData : DataLoader
     }
     void Add(Content contentLine, int colID, string value)
     {
-
         switch (colID)
         {
             case 1: contentLine.id = value; break;
@@ -140,11 +140,33 @@ public class WinesData : DataLoader
                 if(numericValue>0)
                     contentLine.price = int.Parse(r);
                 break;
-            case 5: contentLine.brand = value.ToLower(); CheckForNewFilter(BRANDS, value.ToLower());  break;
+            case 5:
+                value = value.Replace(" ", "").ToLower();
+                contentLine.pais = value;
+                CheckForNewFilter(PAISES, contentLine.pais);
+                break;
+                break;
+            case 6: contentLine.brand = value.ToLower(); CheckForNewFilter(BRANDS, value.ToLower());  break;
+            case 7:
+                string t = value.Replace(" ", "").ToLower();
+                string[] arr = t.Split(","[0]);
+                foreach (string s in arr)
+                    contentLine.tags.Add(s);
+                break;  
+            case 8:
+                value = value.ToLower();
+                if (value == "1 a 3 años")
+                    contentLine.tags.Add("joven");
+                else if (value == "4 a 6 años" || value == "Mas de 6 años")
+                    contentLine.tags.Add("guarda");
+                contentLine.tiempo_guardia = value;
+                CheckForNewFilter(GUARDA, contentLine.tiempo_guardia);
+                break;
             case 9:
-                string v = value.ToLower();
-                contentLine.cepa = v;
-                CheckForNewFilter(CEPAS, v); break;
+                value = value.ToLower();
+                contentLine.cepa = value;
+                CheckForNewFilter(CEPAS, value);
+                break;
             case 11: contentLine.text = value; break;
             //case 12:
             //    string[] tagsArr = value.Split(","[0]);
@@ -178,7 +200,7 @@ public class WinesData : DataLoader
             {
                 if (rowID >= 1)
                 {
-                    if (value != "")
+                    if (value != null && value != "")
                     {
                         if (colID == 0)
                         {
@@ -224,7 +246,7 @@ public class WinesData : DataLoader
                                 else if (v == "4 a 6 años" || v == "Mas de 6 años")
                                     contentLine.tags.Add("guarda");
                                 contentLine.tiempo_guardia = v;
-                                CheckForNewFilter(EDAD, contentLine.tiempo_guardia);
+                                CheckForNewFilter(GUARDA, contentLine.tiempo_guardia);
                             }
                             else if (colID == 7)
                             {
@@ -278,7 +300,7 @@ public class WinesData : DataLoader
                         {
                             if (colID == 2)
                             {
-                                contentLine.text = value.ToLower();
+                                contentLine.text = value;
                             }
                         }
                     }
@@ -352,9 +374,11 @@ public class WinesData : DataLoader
                 foreach (string value in values)
                 {
                     debug_cepa = value;
-                  //  print(c.cepa.ToLower() + "_" + value.ToLower());
-                    if (c.cepa.ToLower() == value.ToLower())
-                        matched = true;                                 
+                    if (c.cepa != null && value != null)
+                    {
+                        if (value != null && value.Length > 1 && c.cepa.ToLower() == value.ToLower())
+                            matched = true;
+                    }
                 }
                 if(!matched)
                     toRemove.Add(c);
@@ -374,7 +398,7 @@ public class WinesData : DataLoader
                 if (!HasAllTags(values, c.tags))
                     toRemove.Add(c);
             }
-            else if (name == WinesData.EDAD)
+            else if (name == WinesData.GUARDA)
             {
                 foreach (string value in values)
                 {
@@ -397,7 +421,7 @@ public class WinesData : DataLoader
     {
         foreach (string value in values)
         {
-            if (!HasTag(tags, value))
+            if (value != "" && !HasTag(tags, value))
                 return false;
         }
         return true;

@@ -245,30 +245,30 @@ public class SommelierData : DataLoader
                     allFiltersActive.exclusivos.Add(s);
             }
         }
-       // print("1 ______" + Data.Instance.winesData.contentFiltered.Count);
+        print("1 ______" + Data.Instance.winesData.contentFiltered.Count);
         if (allFiltersActive.hasta > 0)
             Data.Instance.filtersData.AddFilter(WinesData.HASTA, allFiltersActive.hasta.ToString());
         if (allFiltersActive.desde > 0)
             Data.Instance.filtersData.AddFilter(WinesData.DESDE, allFiltersActive.desde.ToString());
 
-      //  print("2 PRECIO ______" + Data.Instance.winesData.contentFiltered.Count);
+        print("2 PRECIO ______" + Data.Instance.winesData.contentFiltered.Count);
         if (allFiltersActive.paises.Count > 0)
             Data.Instance.winesData.ApplySommelierFilter(WinesData.PAISES, allFiltersActive.paises);
 
-       // print("3 PAISES______" + Data.Instance.winesData.contentFiltered.Count);
+        print("3 PAISES______" + Data.Instance.winesData.contentFiltered.Count);
         if (allFiltersActive.cepas.Count > 0)
             Data.Instance.winesData.ApplySommelierFilter(WinesData.CEPAS, allFiltersActive.cepas);
 
-      //  print("4 CEPAS______" + Data.Instance.winesData.contentFiltered.Count);
+        print("4 CEPAS______" + Data.Instance.winesData.contentFiltered.Count);
         if (allFiltersActive.tags.Count > 0)
             Data.Instance.winesData.ApplySommelierFilter(WinesData.TAGS, allFiltersActive.tags, true);
 
-       // print("5 TAGS ______" + Data.Instance.winesData.contentFiltered.Count);
+        print("5 TAGS ______" + Data.Instance.winesData.contentFiltered.Count);
 
         if (allFiltersActive.edad.Count > 0)
-            Data.Instance.winesData.ApplySommelierFilter(WinesData.EDAD, allFiltersActive.edad, true);
+            Data.Instance.winesData.ApplySommelierFilter(WinesData.GUARDA, allFiltersActive.edad, true);
 
-       // print("6 edad______" + Data.Instance.winesData.contentFiltered.Count);
+        print("6 edad______" + Data.Instance.winesData.contentFiltered.Count);
 
     }
 

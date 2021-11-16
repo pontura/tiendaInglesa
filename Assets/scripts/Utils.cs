@@ -53,6 +53,13 @@
 
         return string.Format ("{0:#,#}",  num);
 	}
+    public static string SetFirstLetterToUpper(string text)
+    {
+        if(text == null || text.Length == 0)
+            return "";
+        return char.ToUpper(text[0]) +
+            ((text.Length > 1) ? text.Substring(1).ToLower() : string.Empty);
+    }
     public static string ToFormattedString(this double rawNumber)
     {
         string[] letters = new string[] { "", "K", "M", "B", "T", "P", "E", "Z", "Y", "KY", "MY", "BY", "TY", "PY", "EY", "ZY", "YY" };

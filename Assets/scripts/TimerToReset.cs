@@ -18,7 +18,8 @@ public class TimerToReset : MonoBehaviour
     }
     public void SetScreen(MainScreen.types type)
     {
-        switch(type)
+        timer = 0;
+        switch (type)
         {
             case MainScreen.types.ERROR:
                 time_to_reset = 6;

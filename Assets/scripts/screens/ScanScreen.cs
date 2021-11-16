@@ -12,44 +12,44 @@ public class ScanScreen : MainScreen
     [SerializeField] Text barCodeField;
     [SerializeField] Text feedbackField;
 
-    void Update()
-    {
-        if (Input.inputString != "")
-        {
-            barCodeField.text += Input.inputString;
-            feedbackField.text = "Llegó del lector!";
-        }
+    //void Update()
+    //{
+    //    if (Input.inputString != "")
+    //    {
+    //        barCodeField.text += Input.inputString;
+    //        feedbackField.text = "Llegó del lector!";
+    //    }
 
-    }
+    //}
 
-    private void OnEnable()
-    {
-        Events.OnScanDone += OnScanDone;
-    }
-    private void OnDisable()
-    {
-        Events.OnScanDone -= OnScanDone;
-    }
-    void OnScanDone(string value)
-    {
-        Data.Instance.winesData.SetActive(value);
-        OnScanReady();
-    }
-    public override void OnShow() {
-      //  scanSimple.gameObject.SetActive(true);
-        Invoke("InitDelayed", 1);
-    }
-    void InitDelayed()
-    {
-      //  scanSimple.ClickStart();
-    }
-    public void OnScanReady()
-    {
-        Game.Instance.screensManager.Show(types.RESULT);
-    }
-    public void OnList()
-    {
-        Game.Instance.screensManager.Show(types.LIST);
-    }
+    //private void OnEnable()
+    //{
+    //    Events.OnScanDone += OnScanDone;
+    //}
+    //private void OnDisable()
+    //{
+    //    Events.OnScanDone -= OnScanDone;
+    //}
+    //void OnScanDone(string value)
+    //{
+    //    Data.Instance.winesData.SetActive(value);
+    //    OnScanReady();
+    //}
+    //public override void OnShow() {
+    //  //  scanSimple.gameObject.SetActive(true);
+    //    Invoke("InitDelayed", 1);
+    //}
+    //void InitDelayed()
+    //{
+    //  //  scanSimple.ClickStart();
+    //}
+    //public void OnScanReady()
+    //{
+    //    Game.Instance.screensManager.Show(types.RESULT);
+    //}
+    //public void OnList()
+    //{
+    //    Game.Instance.screensManager.Show(types.LIST);
+    //}
 
 }
