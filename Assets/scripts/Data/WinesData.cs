@@ -45,7 +45,7 @@ public class WinesData : DataLoader
         public int p3;
         public string premios;
 
-        public bool isExclusive;
+        public int isExclusive = 1;
     }
     private void Awake()
     {
@@ -155,7 +155,7 @@ public class WinesData : DataLoader
                 foreach (string s in arr)
                 {
                     if (s.ToLower() == "e")
-                        contentLine.isExclusive = true;
+                        contentLine.isExclusive = 0;
                     contentLine.tags.Add(s);
                 }
                 break;  
@@ -238,7 +238,7 @@ public class WinesData : DataLoader
                                 foreach(string s in arr)
                                 {
                                     if (s.ToLower() == "e")
-                                        contentLine.isExclusive = true;
+                                        contentLine.isExclusive = 0;
                                     contentLine.tags.Add(s);
                                 }
                             }

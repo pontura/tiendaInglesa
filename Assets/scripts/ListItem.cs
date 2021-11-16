@@ -30,7 +30,7 @@ public class ListItem : MonoBehaviour
             descField.text += salto + "País: " + Utils.SetFirstLetterToUpper(content.pais);
         priceField.text = "$" + content.price;
         StartCoroutine( Data.Instance.imagesLoader.C_LoadImage(content.id, 60, 60, OnLoaded));
-        if (content.isExclusive)
+        if (content.isExclusive == 0)
             cocarda.SetActive(true);
         else
             cocarda.SetActive(false);

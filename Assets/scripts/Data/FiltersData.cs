@@ -142,6 +142,7 @@ public class FiltersData : MonoBehaviour
     {
       //  print("________ArrangeFiltered");
         winesData.contentFiltered.Sort((a, b) => a.price.CompareTo(b.price));
+        winesData.contentFiltered.Sort((a, b) => a.isExclusive.CompareTo(b.isExclusive));
     }
     bool FilteredByPrice(WinesData.Content content, int desde, int hasta)
     {
