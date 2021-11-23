@@ -28,7 +28,7 @@ public class WinesData : DataLoader
     public class Content
     {
         public string id;
-        public string codebar;
+        public List<string> codebar;
         public string name;
         public int price;
         public string brand;
@@ -118,6 +118,7 @@ public class WinesData : DataLoader
                             contentLine = new Content();
                             content.Add(contentLine);
                             contentLine.tags = new List<string>();
+                            contentLine.codebar = new List<string>();
                         }
                     }
                     else if(value != "")
@@ -135,7 +136,17 @@ public class WinesData : DataLoader
         {
             case 1: contentLine.id = value; break;
             case 2: contentLine.name = value; break;
-            case 3: contentLine.codebar = value; break;
+            case 3:
+                string v = value.Replace(" ", "").ToLower();
+                string[] arrC = v.Split(","[0]);
+                if (arrC.Length == 1)
+                    contentLine.codebar.Add(v);
+                else
+                {
+                    foreach (string s in arrC)
+                        contentLine.codebar.Add(s);
+                }
+                break;
             case 4:
                 string r = value;
                 string[] arrs = value.Split("."[0]);
@@ -332,13 +343,33 @@ public class WinesData : DataLoader
                 return c;
         return null;
     }
-    public void SetActive(string codebar)
+    public void SetActiveByID(string id)
     {
         active = null;
         foreach (Content c in content)
-            if (c.codebar == codebar)
+        {
+            if (id == c.id)
+            {
                 active = c;
+                return;
+            }
+        }
 
+    }
+    public void SetActiveByCodebar(string codebar)
+    {
+        active = null;
+        foreach (Content c in content)
+        {
+            foreach (string _codebar in c.codebar)
+            {
+                if (codebar == _codebar)
+                {
+                    active = c;
+                    return;
+                }
+            }
+        }
     }
     void CheckForNewFilter( string filterName, string name)
     {

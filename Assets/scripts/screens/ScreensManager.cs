@@ -75,7 +75,7 @@ public class ScreensManager : MonoBehaviour
         }
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space)) 
-            OnScanReady("780433ss0006717");
+            OnScanReady("07804330006717");
 #endif
     }
     void StartScanning()
@@ -90,6 +90,7 @@ public class ScreensManager : MonoBehaviour
         initScanningTime = 0;
 
         codebarReaded = codebarReaded.Replace("\r\n", "").Replace("\n", "").Replace("\r", "");
+      
 
         Events.OnScanDone(codebarReaded);
         OnScanReady(codebarReaded);
@@ -98,9 +99,13 @@ public class ScreensManager : MonoBehaviour
     }
     public void OnScanReady(string codebar)
     {
+
+        if (codebar.Substring(0, 1) == "0")
+            codebar = codebar.Remove(0, 1);
+
         codebarReaded = codebar;
         Data.Instance.sommelierData.Reset();
-        Data.Instance.winesData.SetActive(codebar);
+        Data.Instance.winesData.SetActiveByCodebar(codebar);
         if(Data.Instance.winesData.active == null)
             Game.Instance.screensManager.Show(MainScreen.types.ERROR);
         else

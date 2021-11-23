@@ -103,7 +103,7 @@ public class ListScreen : MainScreen
     }
     public void OnSelect(WinesData.Content content)
     {
-        Data.Instance.winesData.SetActive(content.codebar);
+        Data.Instance.winesData.SetActiveByID(content.id);
         Game.Instance.screensManager.Show(types.RESULT);
     }
     public void OpenFilters()
