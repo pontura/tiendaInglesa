@@ -15,11 +15,14 @@ public class FiltersScreen : MonoBehaviour
     [SerializeField] GameObject panel;
     ListScreen listScreen;
     public bool changed;
+    public Button button;
+    PaginatorUI paginator;
 
     private void Awake()
     {
         alertField.gameObject.SetActive(false);
-        listScreen = GetComponent<ListScreen>();       
+        listScreen = GetComponent<ListScreen>();
+        paginator = GetComponent<PaginatorUI>();
     }
     public void OnShow()
     {
@@ -27,6 +30,15 @@ public class FiltersScreen : MonoBehaviour
         panel.SetActive(true);
         Refresh();
         changed = false;
+        SetButton();
+        paginator.Hide();
+    }
+    void SetButton()
+    {
+        if (Data.Instance.filtersData.HasFiltersApplied())
+            button.interactable = true;
+        else
+            button.interactable = false;
     }
     public void OnHide()
     {
@@ -47,6 +59,7 @@ public class FiltersScreen : MonoBehaviour
         Refresh();
         OnSelect();
         changed = true;
+        SetButton();
     }
     public void Refresh()
     {
@@ -73,7 +86,9 @@ public class FiltersScreen : MonoBehaviour
         else if (winesData.contentFiltered.Count == 1)
             title.text = "1 vino";
         else
-            title.text = winesData.contentFiltered.Count + " vinos";    
+            title.text = winesData.contentFiltered.Count + " vinos";
+
+        SetButton();
     }
     public void OnChange()
     {

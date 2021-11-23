@@ -140,9 +140,23 @@ public class FiltersData : MonoBehaviour
     }
     public void ArrangeFiltered()
     {
-      //  print("________ArrangeFiltered");
+        //  print("________ArrangeFiltered");
+        List<WinesData.Content> exclusives = new List<WinesData.Content>();
+        foreach (WinesData.Content wdc in winesData.contentFiltered)
+        {
+            if (wdc.isExclusive == 0)
+                exclusives.Add(wdc);
+        }
+        foreach (WinesData.Content wdc in exclusives)
+        {
+            winesData.contentFiltered.Remove(wdc);
+        }
         winesData.contentFiltered.Sort((a, b) => a.price.CompareTo(b.price));
-        winesData.contentFiltered.Sort((a, b) => a.isExclusive.CompareTo(b.isExclusive));
+        exclusives.Sort((a, b) => a.price.CompareTo(b.price));
+        foreach (WinesData.Content wdc in exclusives)
+        {
+            winesData.contentFiltered.Insert(0, wdc);
+        }
     }
     bool FilteredByPrice(WinesData.Content content, int desde, int hasta)
     {
@@ -228,5 +242,14 @@ public class FiltersData : MonoBehaviour
             else if (a < value && filterName == WinesData.HASTA)
                 fd.availableFilters.Add(s);
         }
+    }
+    public bool HasFiltersApplied()
+    {
+        foreach(FilterData fd in filters)
+        {
+            if (fd.applied != null && fd.applied != "")
+                return true;
+        }
+        return false;
     }
 }

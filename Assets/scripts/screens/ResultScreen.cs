@@ -105,6 +105,8 @@ public class ResultScreen : MainScreen
         else
             guarda_temp.SetActive(false);
 
+        image.gameObject.SetActive(false);
+
         StartCoroutine(Data.Instance.imagesLoader.C_LoadImage(active.id, 200, 200, OnLoaded, "large") );
 
         SetFoods();
@@ -112,6 +114,7 @@ public class ResultScreen : MainScreen
     }
     void OnLoaded(Sprite sprite)
     {
+        image.gameObject.SetActive(true);
         bottle.SetActive(false);
         image.sprite = sprite;
         image.SetNativeSize();

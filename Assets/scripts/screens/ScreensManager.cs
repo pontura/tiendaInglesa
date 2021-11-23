@@ -59,14 +59,14 @@ public class ScreensManager : MonoBehaviour
             }
             if (!scanning)
                 return;
-            else if (Time.time > initScanningTime + 0.1f)
+            else if (Time.time > initScanningTime + 0.9f)
             {
                 DoneScanning();
             }
             else
             {
-                if (lastStringAdded == Input.inputString)
-                    return;
+                //if (lastStringAdded == Input.inputString)
+                //    return;
                 lastStringAdded = Input.inputString;
                 codebarReaded += lastStringAdded;
                 if(codebarReaded.Contains("\n"))

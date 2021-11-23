@@ -37,6 +37,8 @@ public class FoodsData : MonoBehaviour
     public List<string> GetFoodByCepa(string _cepa)
     {
         List<string> arr = new List<string>();
+        if (_cepa == null || _cepa == "")
+            return arr;
         foreach(FoodData fd in all)
         {
             string s = fd.cepas.Replace(" ", "").ToLower();
