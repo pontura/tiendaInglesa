@@ -180,12 +180,12 @@ public class WinesData : DataLoader
                 contentLine.cepa = value;
                 //CheckForNewFilter(CEPAS, value);
                 break;
+            case 10: contentLine.temp = value; break;
             case 11: contentLine.text = value; break;
-
-            //case 12: contentLine.p1 = int.Parse(value); break;
-            //case 13: contentLine.p2 = int.Parse(value); break;
-            //case 14: contentLine.p3 = int.Parse(value); break;
-            //case 15: contentLine.premios = value; break;
+            case 12: contentLine.p1 = int.Parse(value); break;
+            case 13: contentLine.p2 = int.Parse(value); break;
+            case 14: contentLine.p3 = int.Parse(value); break;
+            case 15: contentLine.premios = value; break;
         }
     }
 
