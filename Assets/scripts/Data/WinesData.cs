@@ -54,18 +54,65 @@ public class WinesData : DataLoader
     private void Start()
     {
         Data.Instance.filtersData.Init();
-
-        LoadData(null);
+        //LoadData(null);
+        StartCoroutine(GetData(url));
     }
-   
-    public override void OnLoaded(List<SpreadsheetLoader.Line> d)
+
+    IEnumerator GetData(string url)
     {
-        OnDataLoaded(content, d);
+        using (WWW www = new WWW(url))
+        {
+            yield return www;
+            Load(www.text);
+        }
+    }
+
+    public void Load(string csv)
+    {
+        string[][] grid = CsvParser2.Parse(csv);
+        for (int i = 1; i < grid.Length; i++)
+        {
+            string id = grid[i][1];
+            string name = grid[i][2];
+            string text = grid[i][3];
+            string stock = grid[i][4];
+            string price = grid[i][5];
+            string pais = grid[i][6];
+            string brand = grid[i][9];
+            string barcode = grid[i][16];
+
+            name = name.Replace("Vino ", "");
+            name = name.Replace(" Tinto", " ");
+
+            if (!name.Contains("Tetra") && !text.Contains("Vino de mesa"))
+            {
+                Content row = new Content();
+                row.codebar = new List<string>();
+                row.tags = new List<string>();
+
+                Add(row, 1, id);
+                Add(row, 2, name);
+                Add(row, 11, text);
+                Add(row, 4, price);
+                Add(row, 5, pais);
+                Add(row, 6, brand);
+                Add(row, 3, barcode);
+
+                content.Add(row);
+            }
+        }
         LoadListadoData();
     }
+
+
+    //public override void OnLoaded(List<SpreadsheetLoader.Line> d)
+    //{
+    //    OnDataLoaded(content, d);
+        
+    //}
     public void LoadListadoData()
     {
-        Data.Instance.spreadsheetLoader.LoadFromTo(antoDataURL, OnListadoLoaded);
+        Data.Instance.spreadsheetLoader.LoadFromTo(antoDataURL, OnListadoLoaded, types.TSV);
     }
     void OnListadoLoaded(List<SpreadsheetLoader.Line> d) 
     {
@@ -100,36 +147,37 @@ public class WinesData : DataLoader
         foreach (Content c in content)
             contentFiltered.Add(c);
     }
-    void OnDataLoaded(List<Content> content, List<SpreadsheetLoader.Line> d)
-    {
-        int colID = 0;
-        int rowID = 0;
-        Content contentLine = null;
-        foreach (SpreadsheetLoader.Line line in d)
-        {
-            foreach (string value in line.data)
-            {
-                if (rowID >= 1)
-                {
-                    if (colID == 0)
-                    {
-                        if (value != "")
-                        {
-                            contentLine = new Content();
-                            content.Add(contentLine);
-                            contentLine.tags = new List<string>();
-                            contentLine.codebar = new List<string>();
-                        }
-                    }
-                    else if(value != "")
-                        Add(contentLine, colID, value.ToLower());
-                }
-                colID++;
-            }
-            colID = 0;
-            rowID++;
-        }
-    }
+    //void OnDataLoaded(List<Content> content, List<SpreadsheetLoader.Line> d)
+    //{
+    //    int colID = 0;
+    //    int rowID = 0;
+    //    Content contentLine = null;
+    //    foreach (SpreadsheetLoader.Line line in d)
+    //    {
+    //        foreach (string value in line.data)
+    //        {
+    //            if (rowID >= 1)
+    //            {
+    //                if (colID == 0)
+    //                {
+    //                    if (value != "")
+    //                    {
+    //                        contentLine = new Content();
+    //                        content.Add(contentLine);
+    //                        contentLine.tags = new List<string>();
+    //                        contentLine.codebar = new List<string>();
+    //                        contentLine.id = value;
+    //                    }
+    //                }
+    //                else if(value != "")
+    //                    Add(contentLine, colID, value.ToLower());
+    //            }
+    //            colID++;
+    //        }
+    //        colID = 0;
+    //        rowID++;
+    //    }
+    //}
     void Add(Content contentLine, int colID, string value)
     {
         switch (colID)

@@ -11,8 +11,14 @@ public class ImagesLoader : MonoBehaviour
     public IEnumerator C_LoadImage(string imageName, int width, int height, System.Action<Sprite> OnLoad, string size = "small")
     {
         Texture2D texture = new Texture2D(width, height);
+        int l = imageName.Length;
+        for(int a = l; a<6; a++)
+            imageName = "0" + imageName;
+
+
+
         string url = "https://images-ti-vm1.tiendainglesa.com.uy/" + size + "/P" + imageName + "-1.jpg";
-      //  Debug.Log("LoadImage: " + url);
+        Debug.Log("LoadImage: " + url);
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
         yield return request.SendWebRequest();
         if (request.result != UnityWebRequest.Result.Success)

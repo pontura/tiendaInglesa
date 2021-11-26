@@ -7190,13 +7190,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f461ec4f7f7a984fba55b839ee31811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: https://docs.google.com/spreadsheets/d/e/2PACX-1vTxwauSbQslkinnJ0R3qw5VtFjWgZUm4a5koJgnMRP9PoEn4eXj9z535CnYcw-hPUOvzdGxHIhRTT8a/pub?gid=754631824&single=true&output=tsv
+  url: https://totemvinos:ZpKYm.6xw7,{FCCM2~iz}V2"yx@www.tiendainglesa.com.uy/totemvinos/vinos.csv
+  type: 1
   antoDataURL: https://docs.google.com/spreadsheets/d/e/2PACX-1vTxwauSbQslkinnJ0R3qw5VtFjWgZUm4a5koJgnMRP9PoEn4eXj9z535CnYcw-hPUOvzdGxHIhRTT8a/pub?gid=1593497140&single=true&output=tsv
   content: []
   contentFiltered: []
   active:
     id: 
-    codebar: 
+    codebar: []
     name: 
     price: 0
     brand: 
@@ -7264,6 +7265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   url: https://docs.google.com/spreadsheets/d/e/2PACX-1vTxwauSbQslkinnJ0R3qw5VtFjWgZUm4a5koJgnMRP9PoEn4eXj9z535CnYcw-hPUOvzdGxHIhRTT8a/pub?gid=1082386354&single=true&output=tsv
+  type: 0
   content: []
   allActive: []
   allFiltersActive:
@@ -7782,8 +7784,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1087714020}
   m_HandleRect: {fileID: 1087714019}
   m_Direction: 2
-  m_Value: 1.0000103
-  m_Size: 0.6134793
+  m_Value: 1.0000054
+  m_Size: 0.45358315
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
